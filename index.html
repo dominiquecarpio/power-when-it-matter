@@ -1,0 +1,4286 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+    <title>NPS Power Systems – Tampa Bay's Generator Experts</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800;900&family=Barlow:wght@300;400;500;600&display=swap"
+        rel="stylesheet" />
+    <style>
+        /* =============================================
+   CSS VARIABLES & RESET
+   ============================================= */
+        :root {
+            --red: #e02020;
+            --red-dark: #b51818;
+            --blue: #1346a0;
+            --blue-mid: #1a56c4;
+            --blue-light: #2e7df7;
+            --navy: #0d1b3e;
+            --navy-deep: #080f22;
+            --white: #ffffff;
+            --off-white: #f4f6fb;
+            --gray: #8494a9;
+            --gray-light: #e8ecf4;
+            --text: #1a2540;
+            --transition: 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            font-size: 16px;
+        }
+
+        body {
+            font-family: 'Barlow', sans-serif;
+            color: var(--text);
+            background: var(--white);
+            overflow-x: hidden;
+            cursor: default;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        img {
+            max-width: 100%;
+            display: block;
+        }
+
+        ul {
+            list-style: none;
+        }
+
+        button {
+            cursor: pointer;
+            font-family: inherit;
+            border: none;
+            outline: none;
+        }
+
+        /* =============================================
+   LOADING SCREEN
+   ============================================= */
+        #loader {
+            position: fixed;
+            inset: 0;
+            z-index: 9999;
+            background: var(--white);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            transition: opacity 0.6s ease, visibility 0.6s ease;
+        }
+
+        #loader.hide {
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        .loader-logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 160px;
+            margin-bottom: 2.5rem;
+            animation: pulse 1.2s ease infinite;
+        }
+
+        .loader-logo img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .loader-bar-wrap {
+            width: 220px;
+            height: 4px;
+            background: rgba(0, 0, 0, 0.08);
+            border-radius: 2px;
+            overflow: hidden;
+        }
+
+        .loader-bar {
+            height: 100%;
+            width: 0;
+            background: linear-gradient(90deg, var(--blue-light), var(--red));
+            border-radius: 2px;
+            animation: loadbar 1.8s ease forwards;
+        }
+
+        .loader-text {
+            margin-top: 1.2rem;
+            font-size: 0.8rem;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: rgba(0, 0, 0, 0.55);
+        }
+
+        @keyframes loadbar {
+            0% {
+                width: 0
+            }
+
+            60% {
+                width: 75%
+            }
+
+            100% {
+                width: 100%
+            }
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                opacity: 1
+            }
+
+            50% {
+                opacity: 0.6
+            }
+        }
+
+        /* =============================================
+   SCROLLBAR
+   ============================================= */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--navy-deep);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--blue-mid);
+            border-radius: 3px;
+        }
+
+        /* =============================================
+   NAVBAR
+   ============================================= */
+        #navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 2rem;
+            height: 64px;
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+            transition: var(--transition);
+        }
+
+        #navbar.scrolled {
+            background: rgba(255, 255, 255, 0.99);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.08);
+        }
+
+        .nav-logo {
+            font-family: 'Barlow Condensed', sans-serif;
+            font-size: 1.45rem;
+            font-weight: 900;
+            letter-spacing: 0.05em;
+            color: #111111;
+            white-space: nowrap;
+        }
+
+        .nav-logo span {
+            color: var(--red);
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 0.1rem;
+        }
+
+        .nav-links a {
+            font-size: 0.82rem;
+            font-weight: 500;
+            letter-spacing: 0.04em;
+            color: rgba(0, 0, 0, 0.8);
+            padding: 0.4rem 0.65rem;
+            border-radius: 4px;
+            transition: var(--transition);
+            white-space: nowrap;
+        }
+
+        .nav-links a:hover,
+        .nav-links a.active {
+            color: #111111;
+            background: rgba(0, 0, 0, 0.06);
+        }
+
+        .nav-emergency {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: var(--red);
+            color: var(--white);
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            letter-spacing: 0.04em;
+            transition: var(--transition);
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+
+        .nav-emergency:hover {
+            background: var(--red-dark);
+            transform: translateY(-1px);
+        }
+
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            cursor: pointer;
+            padding: 4px;
+        }
+
+        .hamburger span {
+            width: 24px;
+            height: 2px;
+            background: #111111;
+            border-radius: 2px;
+            transition: var(--transition);
+        }
+
+        .hamburger.open span:nth-child(1) {
+            transform: translateY(7px) rotate(45deg);
+        }
+
+        .hamburger.open span:nth-child(2) {
+            opacity: 0;
+        }
+
+        .hamburger.open span:nth-child(3) {
+            transform: translateY(-7px) rotate(-45deg);
+        }
+
+        .mobile-menu {
+            display: none;
+            position: fixed;
+            top: 64px;
+            left: 0;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(12px);
+            flex-direction: column;
+            padding: 1rem;
+            z-index: 999;
+            border-top: 1px solid rgba(0, 0, 0, 0.08);
+            max-height: calc(100vh - 64px);
+            overflow-y: auto;
+        }
+
+        .mobile-menu.open {
+            display: flex;
+        }
+
+        .mobile-menu a {
+            color: rgba(0, 0, 0, 0.8);
+            padding: 0.75rem 1rem;
+            border-radius: 6px;
+            font-weight: 500;
+            transition: var(--transition);
+        }
+
+        .mobile-menu a:hover {
+            color: rgba(0, 0, 0, 0.95);
+            background: rgba(0, 0, 0, 0.06);
+        }
+
+        /* =============================================
+   SECTIONS BASE
+   ============================================= */
+        .page {
+            display: none;
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        /* =============================================
+   HERO SECTIONS
+   ============================================= */
+        .hero {
+            position: relative;
+            min-height: 75vh !important;
+            display: flex;
+            align-items: center;
+            overflow: hidden;
+            padding-top: 0;
+        }
+
+        .hero-bg {
+            position: absolute;
+            inset: 0;
+            background-color: #0d1b3e;
+            background-size: cover;
+            background-position: top center;
+            background-repeat: no-repeat;
+            transition: background-image 0.8s ease-in-out, background-position 0.8s ease-in-out;
+        }
+
+        .hero-bg::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(180deg, rgba(0, 0, 0, 0.35) 0%, rgba(0, 0, 0, 0.55) 100%);
+            z-index: 1;
+        }
+
+        .hero-bg::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: url("data:image/svg+xml,%3Csvg width='60' height='60' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 0h60v60H0z' fill='none'/%3E%3Ccircle cx='30' cy='30' r='0.5' fill='rgba(255,255,255,0.08)'/%3E%3C/svg%3E");
+            opacity: 0.35;
+            z-index: 2;
+        }
+
+        /* Emergency hero overrides */
+        .hero-emergency .hero-bg {
+            background-color: #1a0505;
+        }
+
+        .hero-emergency .hero-bg::before {
+            background: radial-gradient(ellipse at 60% 50%, rgba(224, 32, 32, 0.25) 0%, transparent 60%);
+        }
+
+        /* Page-specific hero images */
+        #page-home .hero-bg { background-image: url('hero1.jpg'); }
+        #page-about .hero-bg { background-image: url('hero4.jpg'); }
+        #page-installation .hero-bg { background-image: url('hero2.jpg'); }
+        #page-maintenance .hero-bg { background-image: url('hero10.jpg'); }
+        #page-repair .hero-bg { background-image: url('hero9.jpg'); }
+        #page-emergency .hero-bg { background-image: url('hero8.jpg'); }
+        #page-plans .hero-bg { background-image: url('hero7_1.webp'); }
+        #page-commercial .hero-bg { background-image: url('hero3.jpg'); }
+        #page-gallery .hero-bg { background-image: url('hero5.jpg'); }
+        #page-reviews .hero-bg { background-image: url('hero6_2.jpg'); }
+        #page-faqs .hero-bg { background-image: url('hero9_2.jpg'); }
+        #page-contact .hero-bg { background-image: url('hero12_1.jpg'); }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            padding: 5rem 6vw 0;
+            max-width: 900px;
+        }
+
+        .hero-eyebrow {
+            display: inline-block;
+            font-size: 0.75rem;
+            font-weight: 700;
+            letter-spacing: 0.22em;
+            text-transform: uppercase;
+            color: var(--blue-light);
+            margin-bottom: 1.2rem;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeUp 0.7s 0.3s forwards;
+        }
+
+        .hero-emergency .hero-eyebrow {
+            color: #ff6b6b;
+        }
+
+        .hero h1 {
+            font-family: 'Barlow Condensed', sans-serif;
+            font-size: clamp(2.8rem, 7vw, 5.5rem);
+            font-weight: 900;
+            line-height: 1.0;
+            color: var(--white);
+            margin-bottom: 1.2rem;
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeUp 0.7s 0.5s forwards;
+        }
+
+        .hero h1 em {
+            font-style: normal;
+            color: var(--blue-light);
+        }
+
+        .hero-emergency h1 em {
+            color: #ff9090;
+        }
+
+        .hero p {
+            font-size: clamp(1rem, 2.2vw, 1.2rem);
+            font-weight: 400;
+            color: rgba(255, 255, 255, 0.75);
+            line-height: 1.7;
+            max-width: 560px;
+            margin-bottom: 2.5rem;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeUp 0.7s 0.7s forwards;
+        }
+
+        .hero-btns {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            opacity: 0;
+            animation: fadeUp 0.7s 0.9s forwards;
+        }
+
+        .hero-badges {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+            margin-top: 3rem;
+            opacity: 0;
+            animation: fadeUp 0.7s 1.1s forwards;
+        }
+
+        .hero-badge {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.78rem;
+            font-weight: 600;
+            letter-spacing: 0.05em;
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .hero-badge svg {
+            color: var(--blue-light);
+            flex-shrink: 0;
+        }
+
+        /* Decorative hero accent */
+        .hero-deco {
+            position: absolute;
+            right: -5vw;
+            top: 50%;
+            transform: translateY(-50%);
+            width: min(50vw, 550px);
+            height: min(50vw, 550px);
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(46, 125, 247, 0.12) 0%, transparent 70%);
+            border: 1px solid rgba(46, 125, 247, 0.1);
+            pointer-events: none;
+            animation: rotateSlow 20s linear infinite;
+        }
+
+        .hero-deco::after {
+            content: '';
+            position: absolute;
+            inset: 15%;
+            border-radius: 50%;
+            border: 1px solid rgba(46, 125, 247, 0.08);
+            animation: rotateSlow 15s linear infinite reverse;
+        }
+
+        .hero-gallery {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 1.25rem;
+            margin-top: 2.5rem;
+        }
+
+        .hero-card {
+            position: relative;
+            border-radius: 18px;
+            overflow: hidden;
+            min-height: 260px;
+            background: var(--gray-light);
+            box-shadow: 0 18px 40px rgba(0, 0, 0, 0.08);
+        }
+
+        .hero-card img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.4s ease;
+        }
+
+        .hero-card:hover img {
+            transform: scale(1.05);
+        }
+
+        .hero-card-label {
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            padding: 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            gap: 1rem;
+            background: linear-gradient(0deg, rgba(0, 0, 0, 0.65), transparent);
+            color: var(--white);
+        }
+
+        .hero-card-number {
+            font-size: 0.95rem;
+            font-weight: 900;
+            letter-spacing: 0.15em;
+        }
+
+        .hero-card-title {
+            font-size: 1rem;
+            font-weight: 700;
+            line-height: 1.2;
+            max-width: 80%;
+        }
+
+        .site-logo {
+            height: 60px;
+            width: auto;
+            display: block;
+        }
+
+        @keyframes rotateSlow {
+            from {
+                transform: translateY(-50%) rotate(0deg)
+            }
+
+            to {
+                transform: translateY(-50%) rotate(360deg)
+            }
+        }
+
+        @keyframes fadeUp {
+            to {
+                opacity: 1;
+                transform: translateY(0)
+            }
+        }
+
+        /* =============================================
+   BUTTONS
+   ============================================= */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-family: 'Barlow Condensed', sans-serif;
+            font-size: 0.95rem;
+            font-weight: 700;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            padding: 0.85rem 1.8rem;
+            border-radius: 6px;
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: rgba(255, 255, 255, 0.12);
+            transform: translateX(-105%);
+            transition: transform 0.4s ease;
+        }
+
+        .btn:hover::before {
+            transform: translateX(0);
+        }
+
+        .btn-primary {
+            background: var(--red);
+            color: var(--white);
+        }
+
+        .btn-primary:hover {
+            background: var(--red-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(224, 32, 32, 0.35);
+        }
+
+        .btn-secondary {
+            background: var(--blue-mid);
+            color: var(--white);
+        }
+
+        .btn-secondary:hover {
+            background: var(--blue);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(26, 86, 196, 0.35);
+        }
+
+        .btn-outline {
+            background: transparent;
+            color: var(--white);
+            border: 2px solid rgba(255, 255, 255, 0.5);
+        }
+
+        .btn-outline:hover {
+            border-color: var(--white);
+            background: rgba(255, 255, 255, 0.08);
+            transform: translateY(-2px);
+        }
+
+        .btn-outline-red {
+            background: transparent;
+            color: var(--red);
+            border: 2px solid var(--red);
+        }
+
+        .btn-outline-red:hover {
+            background: var(--red);
+            color: var(--white);
+            transform: translateY(-2px);
+        }
+
+        .btn-blue-solid {
+            background: var(--blue-light);
+            color: var(--white);
+        }
+
+        .btn-blue-solid:hover {
+            background: var(--blue);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(46, 125, 247, 0.3);
+        }
+
+        /* =============================================
+   SECTION LAYOUT HELPERS
+   ============================================= */
+        .section {
+            padding: 5.5rem 6vw;
+        }
+
+        .section-sm {
+            padding: 3.5rem 6vw;
+        }
+
+        .section-dark {
+            background: var(--navy-deep);
+        }
+
+        .section-navy {
+            background: var(--navy);
+        }
+
+        .section-blue {
+            background: var(--blue);
+        }
+
+        .section-alt {
+            background: var(--off-white);
+        }
+
+        .container {
+            max-width: 1180px;
+            margin: 0 auto;
+        }
+
+        .section-label {
+            display: inline-block;
+            font-size: 0.72rem;
+            font-weight: 700;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--blue-light);
+            margin-bottom: 0.8rem;
+        }
+
+        .section-label.red {
+            color: var(--red);
+        }
+
+        .section-title {
+            font-family: 'Barlow Condensed', sans-serif;
+            font-size: clamp(2rem, 4vw, 3rem);
+            font-weight: 900;
+            line-height: 1.1;
+            color: var(--text);
+            margin-bottom: 1rem;
+        }
+
+        .section-title.white {
+            color: var(--white);
+        }
+
+        .section-sub {
+            font-size: 1rem;
+            color: var(--gray);
+            line-height: 1.7;
+            max-width: 580px;
+        }
+
+        .section-sub.white {
+            color: rgba(255, 255, 255, 0.65);
+        }
+
+        .text-center {
+            text-align: center;
+        }
+
+        .text-center .section-sub {
+            margin: 0 auto;
+        }
+
+        /* =============================================
+   REVEAL ANIMATION
+   ============================================= */
+        .reveal {
+            opacity: 0;
+            transform: translateY(32px);
+            transition: opacity 0.7s ease, transform 0.7s ease;
+        }
+
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .reveal-left {
+            opacity: 0;
+            transform: translateX(-32px);
+            transition: opacity 0.7s ease, transform 0.7s ease;
+        }
+
+        .reveal-left.visible {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .reveal-right {
+            opacity: 0;
+            transform: translateX(32px);
+            transition: opacity 0.7s ease, transform 0.7s ease;
+        }
+
+        .reveal-right.visible {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .delay-1 {
+            transition-delay: 0.1s !important;
+        }
+
+        .delay-2 {
+            transition-delay: 0.2s !important;
+        }
+
+        .delay-3 {
+            transition-delay: 0.3s !important;
+        }
+
+        .delay-4 {
+            transition-delay: 0.4s !important;
+        }
+
+        .delay-5 {
+            transition-delay: 0.5s !important;
+        }
+
+        /* =============================================
+   CARDS & GRIDS
+   ============================================= */
+        .grid-2 {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.5rem;
+        }
+
+        .grid-3 {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+        }
+
+        .grid-4 {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1.5rem;
+        }
+
+        .grid-2-1 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            align-items: center;
+        }
+
+        .card {
+            background: var(--white);
+            border-radius: 12px;
+            border: 1px solid var(--gray-light);
+            padding: 1.8rem;
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: inherit;
+            background: linear-gradient(135deg, rgba(46, 125, 247, 0.04), transparent);
+            opacity: 0;
+            transition: var(--transition);
+        }
+
+        .card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 40px rgba(19, 70, 160, 0.12);
+            border-color: rgba(46, 125, 247, 0.2);
+        }
+
+        .card:hover::before {
+            opacity: 1;
+        }
+
+        .card-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 10px;
+            background: linear-gradient(135deg, rgba(46, 125, 247, 0.12), rgba(19, 70, 160, 0.08));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1rem;
+            color: var(--blue-mid);
+            transition: var(--transition);
+        }
+
+        .card:hover .card-icon {
+            background: linear-gradient(135deg, var(--blue-mid), var(--blue-light));
+            color: var(--white);
+        }
+
+        .card h3 {
+            font-family: 'Barlow Condensed', sans-serif;
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--text);
+            margin-bottom: 0.5rem;
+        }
+
+        .card p {
+            font-size: 0.9rem;
+            color: var(--gray);
+            line-height: 1.6;
+        }
+
+        .card-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.3rem;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--blue-mid);
+            margin-top: 1rem;
+            transition: var(--transition);
+        }
+
+        .card-link:hover {
+            gap: 0.6rem;
+            color: var(--blue-light);
+        }
+
+        .card-dark {
+            background: rgba(255, 255, 255, 0.04);
+            border-color: rgba(255, 255, 255, 0.08);
+        }
+
+        .card-dark:hover {
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3);
+            border-color: rgba(255, 255, 255, 0.15);
+        }
+
+        .card-dark::before {
+            background: linear-gradient(135deg, rgba(46, 125, 247, 0.08), transparent);
+        }
+
+        .card-dark h3 {
+            color: var(--white);
+        }
+
+        .card-dark p {
+            color: rgba(0, 0, 0, 0.55);
+        }
+
+        /* =============================================
+   FORMS
+   ============================================= */
+        .form-card {
+            background: var(--white);
+            border-radius: 16px;
+            padding: 2.5rem;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.08);
+            border: 1px solid var(--gray-light);
+        }
+
+        .form-title {
+            font-family: 'Barlow Condensed', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--text);
+            margin-bottom: 1.5rem;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.85rem 1rem;
+            background: var(--off-white);
+            border: 1.5px solid var(--gray-light);
+            border-radius: 8px;
+            font-family: 'Barlow', sans-serif;
+            font-size: 0.9rem;
+            color: var(--text);
+            outline: none;
+            transition: var(--transition);
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            border-color: var(--blue-light);
+            background: var(--white);
+            box-shadow: 0 0 0 3px rgba(46, 125, 247, 0.1);
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 120px;
+        }
+
+        .form-group select {
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%238494a9' stroke-width='1.5' fill='none'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 1rem center;
+        }
+
+        .form-submit {
+            width: 100%;
+            padding: 1rem;
+            background: var(--blue-light);
+            color: var(--white);
+            border-radius: 8px;
+            font-family: 'Barlow Condensed', sans-serif;
+            font-size: 1rem;
+            font-weight: 700;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            transition: var(--transition);
+        }
+
+        .form-submit:hover {
+            background: var(--blue);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(46, 125, 247, 0.3);
+        }
+
+        /* =============================================
+   BADGES / TAGS
+   ============================================= */
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            font-size: 0.82rem;
+            font-weight: 600;
+            padding: 0.5rem 1rem;
+            border-radius: 50px;
+            border: 1.5px solid var(--gray-light);
+            color: var(--text);
+            background: var(--white);
+            transition: var(--transition);
+        }
+
+        .badge:hover {
+            border-color: var(--blue-light);
+            color: var(--blue-mid);
+        }
+
+        /* =============================================
+   CHECKLIST
+   ============================================= */
+        .checklist {
+            display: flex;
+            flex-direction: column;
+            gap: 0.7rem;
+        }
+
+        .checklist li {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            font-size: 0.92rem;
+            color: var(--text);
+        }
+
+        .checklist li::before {
+            content: '';
+            flex-shrink: 0;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--blue-mid), var(--blue-light));
+            mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3E%3Cpath d='M4 10l4 4 8-8' stroke='white' stroke-width='2' fill='none'/%3E%3C/svg%3E");
+            -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3E%3Cpath d='M4 10l4 4 8-8' stroke='white' stroke-width='2' fill='none'/%3E%3C/svg%3E");
+            mask-size: cover;
+            -webkit-mask-size: cover;
+        }
+
+        /* =============================================
+   CHECKLIST GRID
+   ============================================= */
+        .check-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 0.8rem;
+        }
+
+        .check-item {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            background: var(--white);
+            border: 1px solid var(--gray-light);
+            border-radius: 8px;
+            padding: 0.8rem 1rem;
+            font-size: 0.88rem;
+            font-weight: 500;
+            color: var(--text);
+            transition: var(--transition);
+        }
+
+        .check-item:hover {
+            border-color: var(--blue-light);
+            color: var(--blue-mid);
+            transform: translateY(-2px);
+        }
+
+        .check-item svg {
+            color: var(--blue-mid);
+            flex-shrink: 0;
+        }
+
+        /* =============================================
+   STATS BAR
+   ============================================= */
+        .stats-bar {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0;
+            background: var(--off-white);
+            border-top: 1px solid var(--gray-light);
+            border-bottom: 1px solid var(--gray-light);
+        }
+
+        .stat-item {
+            flex: 1;
+            min-width: 200px;
+            padding: 2rem;
+            text-align: center;
+            border-right: 1px solid var(--gray-light);
+            position: relative;
+            overflow: hidden;
+            transition: var(--transition);
+        }
+
+        .stat-item::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: var(--blue-mid);
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: var(--transition);
+            z-index: 0;
+        }
+
+        .stat-item:hover::before {
+            transform: scaleX(1);
+        }
+
+        .stat-item:hover .stat-num,
+        .stat-item:hover .stat-label {
+            color: var(--white);
+        }
+
+        .stat-num {
+            font-family: 'Barlow Condensed', sans-serif;
+            font-size: 2.4rem;
+            font-weight: 900;
+            color: var(--blue);
+            display: block;
+            position: relative;
+            z-index: 1;
+            transition: var(--transition);
+        }
+
+        .stat-label {
+            font-size: 0.82rem;
+            color: var(--gray);
+            position: relative;
+            z-index: 1;
+            transition: var(--transition);
+        }
+
+        /* =============================================
+   BRANDS TICKER
+   ============================================= */
+        .brands-section {
+            padding: 2.5rem 6vw;
+            background: var(--off-white);
+            border-top: 1px solid var(--gray-light);
+            border-bottom: 1px solid var(--gray-light);
+        }
+
+        .brands-label {
+            text-align: center;
+            font-size: 0.75rem;
+            font-weight: 700;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--gray);
+            margin-bottom: 1.5rem;
+        }
+
+        .brands-row {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 2rem 3.5rem;
+            align-items: center;
+        }
+
+        .brand-name {
+            font-family: 'Barlow Condensed', sans-serif;
+            font-size: 1.4rem;
+            font-weight: 700;
+            letter-spacing: 0.05em;
+            color: var(--gray);
+            transition: var(--transition);
+        }
+
+        .brand-name:hover {
+            color: var(--blue-mid);
+        }
+
+        /* =============================================
+   REVIEWS / TESTIMONIALS
+   ============================================= */
+        .review-card {
+            background: var(--white);
+            border-radius: 12px;
+            border: 1px solid var(--gray-light);
+            padding: 1.8rem;
+            position: relative;
+            overflow: hidden;
+            transition: var(--transition);
+        }
+
+        .review-card::before {
+            content: '"';
+            position: absolute;
+            top: 0.5rem;
+            right: 1.2rem;
+            font-size: 6rem;
+            line-height: 1;
+            color: rgba(46, 125, 247, 0.06);
+            font-family: 'Barlow Condensed', sans-serif;
+            font-weight: 900;
+            pointer-events: none;
+        }
+
+        .review-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 40px rgba(19, 70, 160, 0.1);
+        }
+
+        .stars {
+            display: flex;
+            gap: 3px;
+            margin-bottom: 1rem;
+        }
+
+        .star {
+            color: #f59e0b;
+            font-size: 1rem;
+        }
+
+        .review-text {
+            font-size: 0.92rem;
+            line-height: 1.7;
+            color: var(--text);
+            margin-bottom: 1.2rem;
+            font-style: italic;
+        }
+
+        .reviewer {
+            font-weight: 700;
+            font-size: 0.9rem;
+            color: var(--text);
+        }
+
+        .reviewer-loc {
+            font-size: 0.8rem;
+            color: var(--gray);
+        }
+
+        /* =============================================
+   PRICING CARDS
+   ============================================= */
+        .pricing-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+            align-items: center;
+        }
+
+        .pricing-card {
+            background: var(--white);
+            border-radius: 14px;
+            border: 2px solid var(--gray-light);
+            padding: 2rem 1.8rem;
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .pricing-card.popular {
+            background: var(--navy);
+            border-color: var(--blue-mid);
+            transform: scale(1.04);
+            box-shadow: 0 20px 60px rgba(19, 70, 160, 0.25);
+        }
+
+        .pricing-card:hover {
+            transform: translateY(-4px) scale(1.01);
+        }
+
+        .pricing-card.popular:hover {
+            transform: scale(1.04) translateY(-4px);
+        }
+
+        .pricing-tag {
+            font-size: 0.7rem;
+            font-weight: 700;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--blue-light);
+            margin-bottom: 0.5rem;
+        }
+
+        .pricing-tag.pop {
+            color: #fbbf24;
+        }
+
+        .pricing-title {
+            font-family: 'Barlow Condensed', sans-serif;
+            font-size: 1.6rem;
+            font-weight: 800;
+            margin-bottom: 1.5rem;
+            color: var(--text);
+        }
+
+        .popular .pricing-title {
+            color: var(--white);
+        }
+
+        .pricing-features {
+            display: flex;
+            flex-direction: column;
+            gap: 0.7rem;
+            margin-bottom: 2rem;
+        }
+
+        .pricing-feat {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            font-size: 0.88rem;
+            color: var(--text);
+        }
+
+        .popular .pricing-feat {
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .pricing-feat svg {
+            color: var(--blue-light);
+            flex-shrink: 0;
+        }
+
+        .pricing-btn {
+            width: 100%;
+            padding: 0.9rem;
+            border-radius: 8px;
+            font-family: 'Barlow Condensed', sans-serif;
+            font-size: 0.95rem;
+            font-weight: 700;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            background: var(--blue-light);
+            color: var(--white);
+            transition: var(--transition);
+        }
+
+        .pricing-btn:hover {
+            background: var(--blue);
+            transform: translateY(-2px);
+        }
+
+        .popular .pricing-btn {
+            background: var(--blue-light);
+        }
+
+        /* =============================================
+   BENEFITS TAGS
+   ============================================= */
+        .benefits-tags {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 0.8rem;
+        }
+
+        /* =============================================
+   GALLERY
+   ============================================= */
+        .filter-tabs {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 0.6rem;
+            margin-bottom: 2.5rem;
+        }
+
+        .filter-btn {
+            padding: 0.5rem 1.1rem;
+            border-radius: 50px;
+            font-size: 0.82rem;
+            font-weight: 600;
+            background: var(--off-white);
+            color: var(--gray);
+            border: 1.5px solid var(--gray-light);
+            transition: var(--transition);
+            cursor: pointer;
+        }
+
+        .filter-btn.active,
+        .filter-btn:hover {
+            background: var(--blue-mid);
+            color: var(--white);
+            border-color: var(--blue-mid);
+        }
+
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.2rem;
+        }
+
+        .gallery-item {
+            position: relative;
+            border-radius: 12px;
+            overflow: hidden;
+            aspect-ratio: 4/3;
+            cursor: pointer;
+            background: linear-gradient(135deg, var(--blue) 0%, var(--navy-deep) 100%);
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .gallery-item:hover img {
+            transform: scale(1.05);
+        }
+
+        .gallery-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to top, rgba(8, 15, 34, 0.8) 0%, transparent 60%);
+            opacity: 0;
+            transition: var(--transition);
+            display: flex;
+            align-items: flex-end;
+            padding: 1.2rem;
+        }
+
+        .gallery-item:hover .gallery-overlay {
+            opacity: 1;
+        }
+
+        .gallery-meta {
+            color: var(--white);
+        }
+
+        .gallery-cat {
+            font-size: 0.7rem;
+            font-weight: 700;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--blue-light);
+            margin-bottom: 0.2rem;
+        }
+
+        .gallery-name {
+            font-family: 'Barlow Condensed', sans-serif;
+            font-size: 1.1rem;
+            font-weight: 700;
+        }
+
+        .gallery-loc {
+            font-size: 0.8rem;
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        /* Gallery placeholder with NPS branding */
+        .gallery-placeholder {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Barlow Condensed', sans-serif;
+            font-size: 2.5rem;
+            font-weight: 900;
+            letter-spacing: 0.1em;
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        /* =============================================
+   INDUSTRY CARDS
+   ============================================= */
+        .industry-card {
+            background: var(--white);
+            border: 1px solid var(--gray-light);
+            border-radius: 12px;
+            padding: 1.4rem 1.6rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            transition: var(--transition);
+        }
+
+        .industry-card:hover {
+            transform: translateX(4px);
+            border-color: var(--blue-light);
+            box-shadow: 0 4px 20px rgba(46, 125, 247, 0.1);
+        }
+
+        .industry-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: 10px;
+            background: rgba(46, 125, 247, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--blue-mid);
+            flex-shrink: 0;
+            transition: var(--transition);
+        }
+
+        .industry-card:hover .industry-icon {
+            background: var(--blue-mid);
+            color: var(--white);
+        }
+
+        .industry-label {
+            font-weight: 700;
+            font-size: 0.95rem;
+        }
+
+        /* =============================================
+   SERVICE CHECK ITEMS
+   ============================================= */
+        .service-checks {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 0.8rem;
+        }
+
+        .service-check {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            background: var(--white);
+            border: 1px solid var(--gray-light);
+            border-radius: 8px;
+            padding: 0.7rem 1rem;
+            font-size: 0.88rem;
+            font-weight: 500;
+            transition: var(--transition);
+        }
+
+        .service-check:hover {
+            border-color: var(--blue-mid);
+            color: var(--blue-mid);
+        }
+
+        .service-check svg {
+            color: var(--blue-mid);
+            flex-shrink: 0;
+        }
+
+        /* =============================================
+   CTA SECTION
+   ============================================= */
+        .cta-section {
+            padding: 5rem 6vw;
+            background: linear-gradient(135deg, var(--navy-deep), var(--navy));
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cta-section::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 800px;
+            height: 800px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(46, 125, 247, 0.08) 0%, transparent 70%);
+            pointer-events: none;
+        }
+
+        .cta-section h2 {
+            font-family: 'Barlow Condensed', sans-serif;
+            font-size: clamp(2rem, 4vw, 3rem);
+            font-weight: 900;
+            color: var(--white);
+            margin-bottom: 0.8rem;
+            position: relative;
+        }
+
+        .cta-section p {
+            color: rgba(255, 255, 255, 0.6);
+            margin-bottom: 2rem;
+            position: relative;
+        }
+
+        .cta-btns {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+            position: relative;
+        }
+
+        /* =============================================
+   EMERGENCY PAGE SPECIFICS
+   ============================================= */
+        .emergency-features {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.2rem;
+        }
+
+        .emerg-feat {
+            background: var(--white);
+            border: 1px solid var(--gray-light);
+            border-radius: 10px;
+            padding: 1.4rem 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            transition: var(--transition);
+        }
+
+        .emerg-feat:hover {
+            border-color: var(--red);
+            transform: translateX(4px);
+        }
+
+        .emerg-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: 10px;
+            background: rgba(224, 32, 32, 0.08);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--red);
+            flex-shrink: 0;
+            transition: var(--transition);
+        }
+
+        .emerg-feat:hover .emerg-icon {
+            background: var(--red);
+            color: var(--white);
+        }
+
+        /* =============================================
+   FAQ ACCORDION
+   ============================================= */
+        .faq-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+            max-width: 720px;
+            margin: 0 auto;
+        }
+
+        .faq-item {
+            background: var(--white);
+            border: 1.5px solid var(--gray-light);
+            border-radius: 10px;
+            overflow: hidden;
+            transition: var(--transition);
+        }
+
+        .faq-item.open {
+            border-color: var(--blue-light);
+            box-shadow: 0 4px 20px rgba(46, 125, 247, 0.08);
+        }
+
+        .faq-q {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1.2rem 1.5rem;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.95rem;
+            color: var(--text);
+            transition: var(--transition);
+        }
+
+        .faq-q:hover {
+            color: var(--blue-mid);
+        }
+
+        .faq-chevron {
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            background: var(--off-white);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            transition: var(--transition);
+            color: var(--gray);
+        }
+
+        .faq-item.open .faq-chevron {
+            background: var(--blue-mid);
+            color: var(--white);
+            transform: rotate(180deg);
+        }
+
+        .faq-a {
+            max-height: 0;
+            overflow: hidden;
+            padding: 0 1.5rem;
+            font-size: 0.9rem;
+            color: var(--gray);
+            line-height: 1.7;
+            transition: max-height 0.4s ease, padding 0.4s ease;
+        }
+
+        .faq-item.open .faq-a {
+            max-height: 300px;
+            padding: 0 1.5rem 1.2rem;
+        }
+
+        /* =============================================
+   CONTACT PAGE
+   ============================================= */
+        .contact-info-card {
+            background: var(--white);
+            border: 1px solid var(--gray-light);
+            border-radius: 10px;
+            padding: 1.2rem 1.5rem;
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+            transition: var(--transition);
+        }
+
+        .contact-info-card:hover {
+            border-color: var(--blue-light);
+            transform: translateX(4px);
+        }
+
+        .contact-icon {
+            width: 42px;
+            height: 42px;
+            border-radius: 10px;
+            background: rgba(46, 125, 247, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--blue-mid);
+            flex-shrink: 0;
+        }
+
+        .contact-label {
+            font-size: 0.72rem;
+            font-weight: 700;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: var(--gray);
+            margin-bottom: 0.2rem;
+        }
+
+        .contact-val {
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: var(--text);
+        }
+
+        /* =============================================
+   MAP PLACEHOLDER
+   ============================================= */
+        .map-placeholder {
+            background: var(--off-white);
+            border: 1px solid var(--gray-light);
+            border-radius: 10px;
+            height: 220px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--gray);
+            font-size: 0.88rem;
+        }
+
+        /* =============================================
+   FOOTER
+   ============================================= */
+        footer {
+            background: var(--navy-deep);
+            padding: 4rem 6vw 0;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 1.4fr 1fr 1fr 1.2fr;
+            gap: 2.5rem;
+            padding-bottom: 3rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+        }
+
+        .footer-brand p {
+            font-size: 0.86rem;
+            color: rgba(255, 255, 255, 0.45);
+            margin-top: 0.8rem;
+            line-height: 1.6;
+        }
+
+        .footer-logo {
+            font-family: 'Barlow Condensed', sans-serif;
+            font-size: 1.4rem;
+            font-weight: 900;
+            letter-spacing: 0.05em;
+            color: var(--white);
+        }
+
+        .footer-logo span {
+            color: var(--red);
+        }
+
+        .footer-col h4 {
+            font-family: 'Barlow Condensed', sans-serif;
+            font-size: 0.85rem;
+            font-weight: 700;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--blue-light);
+            margin-bottom: 1rem;
+        }
+
+        .footer-col ul {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .footer-col ul li a {
+            font-size: 0.88rem;
+            color: rgba(255, 255, 255, 0.5);
+            transition: var(--transition);
+        }
+
+        .footer-col ul li a:hover {
+            color: var(--white);
+        }
+
+        .footer-contact-item {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            font-size: 0.88rem;
+            color: rgba(255, 255, 255, 0.5);
+            margin-bottom: 0.6rem;
+        }
+
+        .footer-contact-item svg {
+            color: var(--blue-light);
+            flex-shrink: 0;
+        }
+
+        .footer-socials {
+            display: flex;
+            gap: 0.7rem;
+            margin-top: 1rem;
+        }
+
+        .social-btn {
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.06);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: rgba(255, 255, 255, 0.5);
+            transition: var(--transition);
+        }
+
+        .social-btn:hover {
+            background: var(--blue-mid);
+            color: var(--white);
+        }
+
+        .footer-bottom {
+            padding: 1.5rem 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.8rem;
+            color: rgba(255, 255, 255, 0.25);
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        /* =============================================
+   BACK TO TOP
+   ============================================= */
+        #back-top {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            z-index: 500;
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: var(--blue-mid);
+            color: var(--white);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 16px rgba(26, 86, 196, 0.3);
+            opacity: 0;
+            visibility: hidden;
+            transition: var(--transition);
+            cursor: pointer;
+        }
+
+        #back-top.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        #back-top:hover {
+            background: var(--blue);
+            transform: translateY(-3px);
+        }
+
+        /* =============================================
+   EMERGENCY CONTACT BANNER
+   ============================================= */
+        .emerg-banner {
+            background: var(--red);
+            padding: 1.5rem 2rem;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .emerg-banner-icon {
+            color: var(--white);
+            flex-shrink: 0;
+        }
+
+        .emerg-banner h3 {
+            font-family: 'Barlow Condensed', sans-serif;
+            font-size: 1.1rem;
+            font-weight: 800;
+            color: var(--white);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .emerg-banner p {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: var(--white);
+        }
+
+        /* =============================================
+   MISSION BOX
+   ============================================= */
+        .mission-box {
+            background: linear-gradient(135deg, var(--navy), var(--blue));
+            border-radius: 14px;
+            padding: 2.5rem;
+            margin: 2.5rem 0;
+        }
+
+        .mission-label {
+            font-size: 0.72rem;
+            font-weight: 700;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: rgba(255, 255, 255, 0.5);
+            margin-bottom: 0.8rem;
+        }
+
+        .mission-text {
+            font-family: 'Barlow Condensed', sans-serif;
+            font-size: 1.6rem;
+            font-weight: 800;
+            color: var(--white);
+            line-height: 1.3;
+        }
+
+        /* =============================================
+   ABOUT VALUE CARDS
+   ============================================= */
+        .value-card {
+            background: var(--white);
+            border: 1px solid var(--gray-light);
+            border-radius: 12px;
+            padding: 1.8rem;
+            transition: var(--transition);
+        }
+
+        .value-card:hover {
+            border-color: var(--blue-light);
+            transform: translateY(-4px);
+            box-shadow: 0 12px 30px rgba(46, 125, 247, 0.08);
+        }
+
+        .value-icon {
+            color: var(--blue-mid);
+            margin-bottom: 1rem;
+        }
+
+        .value-card h3 {
+            font-family: 'Barlow Condensed', sans-serif;
+            font-size: 1.15rem;
+            font-weight: 800;
+            color: var(--text);
+            margin-bottom: 0.4rem;
+        }
+
+        .value-card p {
+            font-size: 0.88rem;
+            color: var(--gray);
+            line-height: 1.6;
+        }
+
+        /* =============================================
+   REPAIR COMMON
+   ============================================= */
+        .repair-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.6rem;
+        }
+
+        .repair-item {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            font-size: 0.92rem;
+            color: var(--text);
+            padding: 0.7rem 0;
+            border-bottom: 1px solid var(--gray-light);
+        }
+
+        .repair-item:last-child {
+            border-bottom: none;
+        }
+
+        .repair-warn {
+            color: #f59e0b;
+            flex-shrink: 0;
+        }
+
+        .brand-tag {
+            display: inline-block;
+            padding: 0.35rem 0.9rem;
+            border-radius: 50px;
+            background: var(--off-white);
+            border: 1.5px solid var(--gray-light);
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--text);
+            transition: var(--transition);
+            margin: 0.25rem;
+        }
+
+        .brand-tag:hover {
+            border-color: var(--blue-light);
+            color: var(--blue-mid);
+        }
+
+        /* =============================================
+   RESPONSIVE
+   ============================================= */
+        @media(max-width:1024px) {
+            .grid-4 {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .hero-gallery {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+
+            .footer-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .pricing-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .pricing-card.popular {
+                transform: scale(1);
+            }
+
+            .pricing-card.popular:hover {
+                transform: translateY(-4px);
+            }
+        }
+
+        @media(max-width:768px) {
+
+            .nav-links,
+            .nav-emergency {
+                display: none;
+            }
+
+            .hero-gallery {
+                grid-template-columns: 1fr;
+            }
+
+            .hamburger {
+                display: flex;
+            }
+
+            .hero {
+                min-height: auto;
+                padding-top: 64px;
+                padding-bottom: 3rem;
+            }
+
+            .hero-deco {
+                display: none;
+            }
+
+            .grid-2,
+            .grid-3,
+            .grid-2-1,
+            .emergency-features,
+            .check-grid,
+            .service-checks {
+                grid-template-columns: 1fr;
+            }
+
+            .gallery-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .footer-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .section {
+                padding: 3.5rem 5vw;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+
+            .stats-bar {
+                flex-direction: column;
+            }
+
+            .stat-item {
+                border-right: none;
+                border-bottom: 1px solid var(--gray-light);
+            }
+
+            .brands-row {
+                gap: 1.5rem 2rem;
+            }
+        }
+
+        @media(max-width:480px) {
+            .gallery-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .hero h1 {
+                font-size: 2.3rem;
+            }
+
+            .btn {
+                font-size: 0.85rem;
+                padding: 0.75rem 1.3rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- LOADING SCREEN -->
+    <div id="loader">
+        <div class="loader-logo"><img src="logo.png" alt="NPS Power Systems logo" /></div>
+        <div class="loader-bar-wrap">
+            <div class="loader-bar"></div>
+        </div>
+        <p class="loader-text">Loading Power Systems</p>
+    </div>
+
+    <!-- NAVBAR -->
+    <nav id="navbar">
+        <a class="nav-logo" href="#" onclick="showPage('home')">
+            <img src="logo.png" alt="NPS Power logo" class="site-logo" />
+        </a>
+        <div class="nav-links">
+            <a href="#" onclick="showPage('home')" data-page="home">Home</a>
+            <a href="#" onclick="showPage('about')" data-page="about">About</a>
+            <a href="#" onclick="showPage('installation')" data-page="installation">Installation</a>
+            <a href="#" onclick="showPage('maintenance')" data-page="maintenance">Maintenance</a>
+            <a href="#" onclick="showPage('repair')" data-page="repair">Repair</a>
+            <a href="#" onclick="showPage('emergency')" data-page="emergency">Emergency</a>
+            <a href="#" onclick="showPage('plans')" data-page="plans">Plans</a>
+            <a href="#" onclick="showPage('commercial')" data-page="commercial">Commercial</a>
+            <a href="#" onclick="showPage('gallery')" data-page="gallery">Gallery</a>
+            <a href="#" onclick="showPage('reviews')" data-page="reviews">Reviews</a>
+            <a href="#" onclick="showPage('faqs')" data-page="faqs">FAQs</a>
+            <a href="#" onclick="showPage('contact')" data-page="contact">Contact</a>
+        </div>
+        <a href="tel:8135551234" class="nav-emergency" onclick="return false">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                <path
+                    d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 13.5 19.79 19.79 0 0 1 1.61 4.9 2 2 0 0 1 3.58 2.72h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 10.36a16 16 0 0 0 6 6l.92-.92a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 21.72 18v-1.08z" />
+            </svg>
+            24/7<br>Emergency
+        </a>
+        <div class="hamburger" id="hamburger" onclick="toggleMobile()">
+            <span></span><span></span><span></span>
+        </div>
+    </nav>
+
+    <!-- MOBILE MENU -->
+    <div class="mobile-menu" id="mobileMenu">
+        <a href="#" onclick="showPage('home');closeMobile()">Home</a>
+        <a href="#" onclick="showPage('about');closeMobile()">About</a>
+        <a href="#" onclick="showPage('installation');closeMobile()">Installation</a>
+        <a href="#" onclick="showPage('maintenance');closeMobile()">Maintenance</a>
+        <a href="#" onclick="showPage('repair');closeMobile()">Repair</a>
+        <a href="#" onclick="showPage('emergency');closeMobile()">Emergency</a>
+        <a href="#" onclick="showPage('plans');closeMobile()">Plans</a>
+        <a href="#" onclick="showPage('commercial');closeMobile()">Commercial</a>
+        <a href="#" onclick="showPage('gallery');closeMobile()">Gallery</a>
+        <a href="#" onclick="showPage('reviews');closeMobile()">Reviews</a>
+        <a href="#" onclick="showPage('faqs');closeMobile()">FAQs</a>
+        <a href="#" onclick="showPage('contact');closeMobile()">Contact</a>
+    </div>
+
+    <!-- ============================================================
+     HOME PAGE
+     ============================================================ -->
+    <div id="page-home" class="page active">
+
+        <!-- Hero -->
+        <section class="hero">
+            <div class="hero-bg"></div>
+            <div class="hero-deco"></div>
+            <div class="hero-content">
+                <span class="hero-eyebrow">Power When It Matters Most</span>
+                <h1>Tampa Bay's Trusted<br><em>Generator Experts</em></h1>
+                <p>Keep your home or business powered through any outage with professional generator installation,
+                    maintenance, and emergency repair services.</p>
+                <div class="hero-btns">
+                    <a class="btn btn-primary" href="#" onclick="showPage('emergency')">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2.5">
+                            <path
+                                d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 13.5 19.79 19.79 0 0 1 1.61 4.9 2 2 0 0 1 3.58 2.72h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 10.36a16 16 0 0 0 6 6l.92-.92a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 21.72 18v-1.08z" />
+                        </svg>
+                        Get Emergency Service
+                    </a>
+                    <a class="btn btn-outline" href="#" onclick="showPage('contact')">Request Free Estimate</a>
+                    <a class="btn btn-outline" href="tel:8135551234">Call Now</a>
+                </div>
+                <div class="hero-badges">
+                    <span class="hero-badge"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2.5">
+                            <polyline points="20 6 9 17 4 12" />
+                        </svg>Certified Specialists</span>
+                    <span class="hero-badge"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2.5">
+                            <polyline points="20 6 9 17 4 12" />
+                        </svg>24/7 Emergency Response</span>
+                    <span class="hero-badge"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2.5">
+                            <polyline points="20 6 9 17 4 12" />
+                        </svg>Residential &amp; Commercial</span>
+                    <span class="hero-badge"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2.5">
+                            <polyline points="20 6 9 17 4 12" />
+                        </svg>Licensed &amp; Insured</span>
+                </div>
+            </div>
+        </section>
+
+        <section class="section section-alt">
+            <div class="container">
+                <div class="text-center" style="margin-bottom:2rem">
+                    <span class="section-label reveal">Project Highlights</span>
+                    <h2 class="section-title reveal delay-1">Featured Home Power Projects</h2>
+                    <p class="section-sub reveal delay-2">See three recent home backup power installations with numbered highlights.</p>
+                </div>
+                <div class="hero-gallery">
+                    <article class="hero-card reveal">
+                        <img src="hero1.jpg" alt="Home generator installation 01" />
+                        <div class="hero-card-label">
+                            <span class="hero-card-number">01</span>
+                            <span class="hero-card-title">Whole-home backup install</span>
+                        </div>
+                    </article>
+                    <article class="hero-card reveal delay-1">
+                        <img src="hero2.jpg" alt="Home generator service 02" />
+                        <div class="hero-card-label">
+                            <span class="hero-card-number">02</span>
+                            <span class="hero-card-title">Residential generator service</span>
+                        </div>
+                    </article>
+                    <article class="hero-card reveal delay-2">
+                        <img src="hero3.jpg" alt="Home generator maintenance 03" />
+                        <div class="hero-card-label">
+                            <span class="hero-card-number">03</span>
+                            <span class="hero-card-title">Storm-ready maintenance visit</span>
+                        </div>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <!-- Stats -->
+        <div class="stats-bar">
+            <div class="stat-item reveal"><span class="stat-num">15+</span><span class="stat-label">Years
+                    Experience</span></div>
+            <div class="stat-item reveal delay-1"><span class="stat-num">2,400+</span><span
+                    class="stat-label">Installations</span></div>
+            <div class="stat-item reveal delay-2"><span class="stat-num">24/7</span><span class="stat-label">Emergency
+                    Response</span></div>
+            <div class="stat-item reveal delay-3"><span class="stat-num">4.9★</span><span class="stat-label">Customer
+                    Rating</span></div>
+        </div>
+
+        <!-- Services -->
+        <section class="section">
+            <div class="container">
+                <div class="text-center" style="margin-bottom:3rem">
+                    <span class="section-label reveal">What We Do</span>
+                    <h2 class="section-title reveal delay-1">Complete Generator Services</h2>
+                    <p class="section-sub reveal delay-2">From new installations to emergency repairs, we keep Tampa Bay
+                        powered.</p>
+                </div>
+                <div class="grid-4">
+                    <div class="card reveal">
+                        <div class="card-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="2">
+                                <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
+                            </svg></div>
+                        <h3>Generator Installation</h3>
+                        <p>Professional standby generator installations to keep your property protected.</p>
+                        <a class="card-link" href="#" onclick="showPage('installation')">Learn more →</a>
+                    </div>
+                    <div class="card reveal delay-1">
+                        <div class="card-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="2">
+                                <circle cx="12" cy="12" r="3" />
+                                <path
+                                    d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83" />
+                            </svg></div>
+                        <h3>Generator Maintenance</h3>
+                        <p>Preventive maintenance plans that ensure your generator performs when needed.</p>
+                        <a class="card-link" href="#" onclick="showPage('maintenance')">Learn more →</a>
+                    </div>
+                    <div class="card reveal delay-2">
+                        <div class="card-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="2">
+                                <path
+                                    d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z" />
+                            </svg></div>
+                        <h3>Generator Repair</h3>
+                        <p>Fast diagnostics and repairs for all major generator brands.</p>
+                        <a class="card-link" href="#" onclick="showPage('repair')">Learn more →</a>
+                    </div>
+                    <div class="card reveal delay-3">
+                        <div class="card-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="2">
+                                <circle cx="12" cy="12" r="10" />
+                                <polyline points="12 6 12 12 16 14" />
+                            </svg></div>
+                        <h3>Emergency Service</h3>
+                        <p>24/7 emergency response when outages threaten your operations.</p>
+                        <a class="card-link" href="#" onclick="showPage('emergency')">Learn more →</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Brands -->
+        <div class="brands-section">
+            <div class="container">
+                <p class="brands-label">Factory-Trained on All Major Brands</p>
+                <div class="brands-row">
+                    <span class="brand-name">Generac</span>
+                    <span class="brand-name">Kohler</span>
+                    <span class="brand-name">Cummins</span>
+                    <span class="brand-name">Briggs &amp; Stratton</span>
+                    <span class="brand-name">Champion</span>
+                    <span class="brand-name" style="font-size:0.95rem;font-weight:500">& most major brands</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Why Choose -->
+        <section class="section section-alt">
+            <div class="container">
+                <div style="margin-bottom:3rem">
+                    <span class="section-label reveal">Why Choose NPS</span>
+                    <h2 class="section-title reveal delay-1">Built on Reliability</h2>
+                </div>
+                <div class="grid-4">
+                    <div class="card reveal">
+                        <div class="card-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="2">
+                                <circle cx="12" cy="8" r="6" />
+                                <path d="M15.477 12.89 17 22l-5-3-5 3 1.523-9.11" />
+                            </svg></div>
+                        <h3>Specialized Expertise</h3>
+                        <p>Unlike general contractors, generators are our only specialty.</p>
+                    </div>
+                    <div class="card reveal delay-1">
+                        <div class="card-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="2">
+                                <circle cx="12" cy="12" r="10" />
+                                <polyline points="12 6 12 12 16 14" />
+                            </svg></div>
+                        <h3>24/7 Availability</h3>
+                        <p>Rapid response when outages occur — day, night, weekends, holidays.</p>
+                    </div>
+                    <div class="card reveal delay-2">
+                        <div class="card-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="2">
+                                <rect x="3" y="3" width="7" height="7" />
+                                <rect x="14" y="3" width="7" height="7" />
+                                <rect x="14" y="14" width="7" height="7" />
+                                <rect x="3" y="14" width="7" height="7" />
+                            </svg></div>
+                        <h3>Residential &amp; Commercial</h3>
+                        <p>Tailored backup power systems for homes and businesses.</p>
+                    </div>
+                    <div class="card reveal delay-3">
+                        <div class="card-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="2">
+                                <path
+                                    d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z" />
+                            </svg></div>
+                        <h3>Preventive Programs</h3>
+                        <p>Reduce downtime and extend equipment lifespan with scheduled care.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Reviews -->
+        <section class="section section-dark">
+            <div class="container">
+                <div class="text-center" style="margin-bottom:3rem">
+                    <span class="section-label reveal">Customer Reviews</span>
+                    <h2 class="section-title white reveal delay-1">What Our Customers Say</h2>
+                </div>
+                <div class="grid-3">
+                    <div class="review-card card-dark reveal">
+                        <div class="stars"><span class="star">★</span><span class="star">★</span><span
+                                class="star">★</span><span class="star">★</span><span class="star">★</span></div>
+                        <p class="review-text">"NPS installed our whole-home Generac last summer. Professional, on-time,
+                            and the unit kicked on within seconds during Hurricane Idalia."</p>
+                        <div class="reviewer" style="color:#fff">Maria Hernandez</div>
+                        <div class="reviewer-loc">Tampa, FL</div>
+                    </div>
+                    <div class="review-card card-dark reveal delay-1">
+                        <div class="stars"><span class="star">★</span><span class="star">★</span><span
+                                class="star">★</span><span class="star">★</span><span class="star">★</span></div>
+                        <p class="review-text">"Called them at midnight during an outage — tech was on-site within the
+                            hour. True 24/7 emergency service."</p>
+                        <div class="reviewer" style="color:#fff">James W.</div>
+                        <div class="reviewer-loc">St. Petersburg, FL</div>
+                    </div>
+                    <div class="review-card card-dark reveal delay-2">
+                        <div class="stars"><span class="star">★</span><span class="star">★</span><span
+                                class="star">★</span><span class="star">★</span><span class="star">★</span></div>
+                        <p class="review-text">"We rely on NPS for quarterly maintenance on our commercial generators.
+                            Zero failures in three years."</p>
+                        <div class="reviewer" style="color:#fff">Sarah Chen</div>
+                        <div class="reviewer-loc">Clearwater, FL</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CTA -->
+        <section class="cta-section">
+            <div class="container">
+                <h2 class="reveal">Ready For Reliable Backup Power?</h2>
+                <p class="reveal delay-1">Schedule your free consultation today.</p>
+                <div class="cta-btns reveal delay-2">
+                    <a class="btn btn-secondary" href="#" onclick="showPage('contact')">Request Estimate</a>
+                    <a class="btn btn-outline-red" href="#" onclick="showPage('emergency')">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2.5">
+                            <path
+                                d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 13.5 19.79 19.79 0 0 1 1.61 4.9 2 2 0 0 1 3.58 2.72h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 10.36a16 16 0 0 0 6 6l.92-.92a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 21.72 18v-1.08z" />
+                        </svg>
+                        Call Emergency Service
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <div id="footer-home"></div>
+    </div>
+
+    <!-- ============================================================
+     ABOUT PAGE
+     ============================================================ -->
+    <div id="page-about" class="page">
+        <section class="hero" style="min-height:50vh">
+            <div class="hero-bg"></div>
+            <div class="hero-content">
+                <span class="hero-eyebrow">About Us</span>
+                <h1>Dedicated Generator<br><em>Professionals</em></h1>
+                <p>Reliable backup power for Tampa Bay homes and businesses.</p>
+            </div>
+        </section>
+
+        <section class="section section-alt">
+            <div class="container">
+                <div class="text-center" style="margin-bottom:2rem">
+                    <span class="section-label reveal">Our Work</span>
+                    <h2 class="section-title reveal delay-1">About Our Project Experience</h2>
+                    <p class="section-sub reveal delay-2">Three standout project photos that show the quality and scale of our generator work.</p>
+                </div>
+                <div class="hero-gallery">
+                    <article class="hero-card reveal">
+                        <img src="hero4.jpg" alt="Commercial backup power 01" />
+                        <div class="hero-card-label">
+                            <span class="hero-card-number">01</span>
+                            <span class="hero-card-title">Expert project planning</span>
+                        </div>
+                    </article>
+                    <article class="hero-card reveal delay-1">
+                        <img src="hero5.jpg" alt="Generator system installation 02" />
+                        <div class="hero-card-label">
+                            <span class="hero-card-number">02</span>
+                            <span class="hero-card-title">Field-tested installation</span>
+                        </div>
+                    </article>
+                    <article class="hero-card reveal delay-2">
+                        <img src="hero6.jpg" alt="Generator maintenance 03" />
+                        <div class="hero-card-label">
+                            <span class="hero-card-number">03</span>
+                            <span class="hero-card-title">Reliable long-term service</span>
+                        </div>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <section class="section">
+            <div class="container">
+                <div class="grid-2-1" style="gap:4rem">
+                    <div>
+                        <p style="font-size:1rem;line-height:1.8;color:var(--gray);margin-bottom:1.2rem">NPS Power
+                            Systems specializes exclusively in backup power solutions. Our team provides generator
+                            installation, maintenance, diagnostics, and emergency repair services throughout the Tampa
+                            Bay area.</p>
+                        <p style="font-size:1rem;line-height:1.8;color:var(--gray);margin-bottom:2rem">We work with
+                            homeowners, businesses, property managers, healthcare facilities, and commercial
+                            organizations to ensure uninterrupted power when it matters most.</p>
+                        <div class="mission-box">
+                            <div class="mission-label">Our Mission</div>
+                            <div class="mission-text">Deliver dependable power solutions backed by expert service and
+                                unmatched customer support.</div>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="grid-2" style="gap:1rem">
+                            <div class="value-card reveal">
+                                <div class="value-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none"
+                                        stroke="currentColor" stroke-width="2">
+                                        <circle cx="12" cy="8" r="6" />
+                                        <path d="M15.477 12.89 17 22l-5-3-5 3 1.523-9.11" />
+                                    </svg></div>
+                                <h3>Specialized Focus</h3>
+                                <p>Generators are our only business — not a side service.</p>
+                            </div>
+                            <div class="value-card reveal delay-1">
+                                <div class="value-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none"
+                                        stroke="currentColor" stroke-width="2">
+                                        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+                                        <circle cx="9" cy="7" r="4" />
+                                        <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
+                                        <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+                                    </svg></div>
+                                <h3>Customer First</h3>
+                                <p>Transparent quotes, on-time service, no surprises.</p>
+                            </div>
+                            <div class="value-card reveal delay-2">
+                                <div class="value-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none"
+                                        stroke="currentColor" stroke-width="2">
+                                        <rect x="3" y="3" width="7" height="7" />
+                                        <rect x="14" y="3" width="7" height="7" />
+                                        <rect x="14" y="14" width="7" height="7" />
+                                        <rect x="3" y="14" width="7" height="7" />
+                                    </svg></div>
+                                <h3>Residential &amp; Commercial</h3>
+                                <p>From single-family homes to multi-site operations.</p>
+                            </div>
+                            <div class="value-card reveal delay-3">
+                                <div class="value-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none"
+                                        stroke="currentColor" stroke-width="2">
+                                        <path
+                                            d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
+                                    </svg></div>
+                                <h3>Community Rooted</h3>
+                                <p>Proudly serving Tampa Bay through every storm season.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="cta-section">
+            <div class="container">
+                <h2 class="reveal">Ready For Reliable Backup Power?</h2>
+                <p class="reveal delay-1">Schedule your free consultation today.</p>
+                <div class="cta-btns reveal delay-2">
+                    <a class="btn btn-secondary" href="#" onclick="showPage('contact')">Request Estimate</a>
+                    <a class="btn btn-outline-red" href="#" onclick="showPage('emergency')"><svg width="14" height="14"
+                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                            <path
+                                d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 13.5 19.79 19.79 0 0 1 1.61 4.9 2 2 0 0 1 3.58 2.72h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 10.36a16 16 0 0 0 6 6l.92-.92a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 21.72 18v-1.08z" />
+                        </svg>Call Emergency Service</a>
+                </div>
+            </div>
+        </section>
+        <div id="footer-about"></div>
+    </div>
+
+    <!-- ============================================================
+     INSTALLATION PAGE
+     ============================================================ -->
+    <div id="page-installation" class="page">
+        <section class="hero" style="min-height:55vh">
+            <div class="hero-bg"></div>
+            <div class="hero-content">
+                <span class="hero-eyebrow">Installation</span>
+                <h1>Professional Generator<br><em>Installation</em></h1>
+                <p>Turnkey standby generator systems sized and installed by certified specialists.</p>
+            </div>
+        </section>
+
+        <section class="section section-alt">
+            <div class="container">
+                <div class="text-center" style="margin-bottom:2rem">
+                    <span class="section-label reveal">Installation Highlights</span>
+                    <h2 class="section-title reveal delay-1">Installation Project Gallery</h2>
+                    <p class="section-sub reveal delay-2">Three numbered installation photos that show our expert team and completed systems.</p>
+                </div>
+                <div class="hero-gallery">
+                    <article class="hero-card reveal">
+                        <img src="hero7.jpg" alt="Generator installation example 01" />
+                        <div class="hero-card-label">
+                            <span class="hero-card-number">01</span>
+                            <span class="hero-card-title">Site prep and pad installation</span>
+                        </div>
+                    </article>
+                    <article class="hero-card reveal delay-1">
+                        <img src="hero8.jpg" alt="Generator installation example 02" />
+                        <div class="hero-card-label">
+                            <span class="hero-card-number">02</span>
+                            <span class="hero-card-title">Wiring and transfer switch setup</span>
+                        </div>
+                    </article>
+                    <article class="hero-card reveal delay-2">
+                        <img src="hero9.jpg" alt="Generator installation example 03" />
+                        <div class="hero-card-label">
+                            <span class="hero-card-number">03</span>
+                            <span class="hero-card-title">Final commissioning and testing</span>
+                        </div>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <section class="section">
+            <div class="container">
+                <div class="grid-2-1" style="align-items:start;gap:4rem">
+                    <div class="reveal-left">
+                        <h2 class="section-title" style="margin-bottom:0.5rem">Full-Service Installation</h2>
+                        <p style="color:var(--gray);margin-bottom:2rem">From load analysis to final commissioning, we
+                            handle every step.</p>
+                        <div class="check-grid" style="grid-template-columns:1fr 1fr;margin-bottom:3rem">
+                            <div class="check-item"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"
+                                    stroke="currentColor" stroke-width="2.5">
+                                    <polyline points="20 6 9 17 4 12" />
+                                </svg>Whole Home Generators</div>
+                            <div class="check-item"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"
+                                    stroke="currentColor" stroke-width="2.5">
+                                    <polyline points="20 6 9 17 4 12" />
+                                </svg>Commercial Standby</div>
+                            <div class="check-item"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"
+                                    stroke="currentColor" stroke-width="2.5">
+                                    <polyline points="20 6 9 17 4 12" />
+                                </svg>Auto Transfer Switches</div>
+                            <div class="check-item"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"
+                                    stroke="currentColor" stroke-width="2.5">
+                                    <polyline points="20 6 9 17 4 12" />
+                                </svg>Load Analysis</div>
+                            <div class="check-item"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"
+                                    stroke="currentColor" stroke-width="2.5">
+                                    <polyline points="20 6 9 17 4 12" />
+                                </svg>Generator Sizing</div>
+                            <div class="check-item"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"
+                                    stroke="currentColor" stroke-width="2.5">
+                                    <polyline points="20 6 9 17 4 12" />
+                                </svg>Permit Assistance</div>
+                            <div class="check-item"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"
+                                    stroke="currentColor" stroke-width="2.5">
+                                    <polyline points="20 6 9 17 4 12" />
+                                </svg>Electrical Integration</div>
+                            <div class="check-item"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"
+                                    stroke="currentColor" stroke-width="2.5">
+                                    <polyline points="20 6 9 17 4 12" />
+                                </svg>Startup Testing</div>
+                        </div>
+                        <h3 class="section-title" style="font-size:1.5rem;margin-bottom:1.5rem">Why Install with NPS
+                        </h3>
+                        <div class="grid-2" style="gap:1rem">
+                            <div class="card">
+                                <div class="card-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"
+                                        stroke="currentColor" stroke-width="2">
+                                        <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
+                                        <polyline points="9 22 9 12 15 12 15 22" />
+                                    </svg></div>
+                                <h3>Protect Your Home</h3>
+                                <p>Keep AC, refrigeration, security and medical equipment running.</p>
+                            </div>
+                            <div class="card">
+                                <div class="card-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"
+                                        stroke="currentColor" stroke-width="2">
+                                        <rect x="3" y="3" width="7" height="7" />
+                                        <rect x="14" y="3" width="7" height="7" />
+                                        <rect x="14" y="14" width="7" height="7" />
+                                        <rect x="3" y="14" width="7" height="7" />
+                                    </svg></div>
+                                <h3>Maintain Operations</h3>
+                                <p>Avoid costly business downtime during outages.</p>
+                            </div>
+                            <div class="card">
+                                <div class="card-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"
+                                        stroke="currentColor" stroke-width="2">
+                                        <polyline points="23 6 13.5 15.5 8.5 10.5 1 18" />
+                                        <polyline points="17 6 23 6 23 12" />
+                                    </svg></div>
+                                <h3>Increase Property Value</h3>
+                                <p>Standby generators are a proven home value-add.</p>
+                            </div>
+                            <div class="card">
+                                <div class="card-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"
+                                        stroke="currentColor" stroke-width="2">
+                                        <circle cx="12" cy="12" r="10" />
+                                        <polyline points="12 6 12 12 16 14" />
+                                    </svg></div>
+                                <h3>Automatic Restoration</h3>
+                                <p>Power restored within seconds of grid failure.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="reveal-right">
+                        <div class="form-card">
+                            <div class="form-title">Request Free Installation Estimate</div>
+                            <div class="form-row">
+                                <div class="form-group"><input type="text" placeholder="Full Name" /></div>
+                                <div class="form-group"><input type="tel" placeholder="Phone" /></div>
+                            </div>
+                            <div class="form-group"><input type="email" placeholder="Email" /></div>
+                            <div class="form-group"><select>
+                                    <option>Service Needed</option>
+                                    <option>Whole Home Generator</option>
+                                    <option>Commercial Generator</option>
+                                    <option>Transfer Switch</option>
+                                </select></div>
+                            <div class="form-group"><textarea placeholder="Tell us about your project..."></textarea>
+                            </div>
+                            <button class="form-submit">Send Request</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="cta-section">
+            <div class="container">
+                <h2 class="reveal">Ready For Reliable Backup Power?</h2>
+                <p class="reveal delay-1">Schedule your free consultation today.</p>
+                <div class="cta-btns reveal delay-2">
+                    <a class="btn btn-secondary" href="#" onclick="showPage('contact')">Request Estimate</a>
+                    <a class="btn btn-outline-red" href="#" onclick="showPage('emergency')"><svg width="14" height="14"
+                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                            <path
+                                d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 13.5 19.79 19.79 0 0 1 1.61 4.9 2 2 0 0 1 3.58 2.72h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 10.36a16 16 0 0 0 6 6l.92-.92a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 21.72 18v-1.08z" />
+                        </svg>Call Emergency Service</a>
+                </div>
+            </div>
+        </section>
+        <div id="footer-installation"></div>
+    </div>
+
+    <!-- ============================================================
+     MAINTENANCE PAGE
+     ============================================================ -->
+    <div id="page-maintenance" class="page">
+        <section class="hero" style="min-height:50vh">
+            <div class="hero-bg"></div>
+            <div class="hero-content">
+                <span class="hero-eyebrow">Maintenance</span>
+                <h1>Preventive Generator<br><em>Maintenance</em></h1>
+                <p>Regular service keeps your generator ready when the lights go out.</p>
+            </div>
+        </section>
+
+        <section class="section section-alt">
+            <div class="container">
+                <div class="text-center" style="margin-bottom:2rem">
+                    <span class="section-label reveal">Maintenance Highlights</span>
+                    <h2 class="section-title reveal delay-1">Maintenance Project Gallery</h2>
+                    <p class="section-sub reveal delay-2">Three numbered maintenance photos that show our preventive service checks and tests.</p>
+                </div>
+                <div class="hero-gallery">
+                    <article class="hero-card reveal">
+                        <img src="hero10.jpg" alt="Maintenance example 01" />
+                        <div class="hero-card-label">
+                            <span class="hero-card-number">01</span>
+                            <span class="hero-card-title">Detailed system inspection</span>
+                        </div>
+                    </article>
+                    <article class="hero-card reveal delay-1">
+                        <img src="hero11.jpg" alt="Maintenance example 02" />
+                        <div class="hero-card-label">
+                            <span class="hero-card-number">02</span>
+                            <span class="hero-card-title">Service and fluid changes</span>
+                        </div>
+                    </article>
+                    <article class="hero-card reveal delay-2">
+                        <img src="hero12_1.jpg" alt="Maintenance example 03" />
+                        <div class="hero-card-label">
+                            <span class="hero-card-number">03</span>
+                            <span class="hero-card-title">Performance and load testing</span>
+                        </div>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <section class="section">
+            <div class="container">
+                <p class="reveal"
+                    style="font-size:1rem;line-height:1.8;color:var(--gray);max-width:720px;margin-bottom:2.5rem">
+                    Regular maintenance keeps your generator ready for unexpected outages. Our certified technicians
+                    perform comprehensive multi-point inspections to ensure peak performance.</p>
+                <div class="check-grid reveal delay-1" style="margin-bottom:2.5rem">
+                    <div class="check-item"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2.5">
+                            <polyline points="20 6 9 17 4 12" />
+                        </svg>Oil Changes</div>
+                    <div class="check-item"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2.5">
+                            <polyline points="20 6 9 17 4 12" />
+                        </svg>Filter Replacement</div>
+                    <div class="check-item"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2.5">
+                            <polyline points="20 6 9 17 4 12" />
+                        </svg>Battery Testing</div>
+                    <div class="check-item"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2.5">
+                            <polyline points="20 6 9 17 4 12" />
+                        </svg>Load Testing</div>
+                    <div class="check-item"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2.5">
+                            <polyline points="20 6 9 17 4 12" />
+                        </svg>Fuel System Inspection</div>
+                    <div class="check-item"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2.5">
+                            <polyline points="20 6 9 17 4 12" />
+                        </svg>Control Panel Diagnostics</div>
+                    <div class="check-item"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2.5">
+                            <polyline points="20 6 9 17 4 12" />
+                        </svg>Performance Verification</div>
+                </div>
+                <div style="text-align:center">
+                    <a class="btn btn-secondary reveal" href="#" onclick="showPage('contact')">Schedule Maintenance</a>
+                </div>
+            </div>
+        </section>
+
+        <section class="cta-section">
+            <div class="container">
+                <h2 class="reveal">Lock In Year-Round Reliability</h2>
+                <p class="reveal delay-1">Ask about our preventive maintenance contracts with priority response.</p>
+                <div class="cta-btns reveal delay-2">
+                    <a class="btn btn-secondary" href="#" onclick="showPage('contact')">Request Estimate</a>
+                    <a class="btn btn-outline-red" href="#" onclick="showPage('emergency')"><svg width="14" height="14"
+                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                            <path
+                                d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 13.5 19.79 19.79 0 0 1 1.61 4.9 2 2 0 0 1 3.58 2.72h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 10.36a16 16 0 0 0 6 6l.92-.92a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 21.72 18v-1.08z" />
+                        </svg>Call Emergency Service</a>
+                </div>
+            </div>
+        </section>
+        <div id="footer-maintenance"></div>
+    </div>
+
+    <!-- ============================================================
+     REPAIR PAGE
+     ============================================================ -->
+    <div id="page-repair" class="page">
+        <section class="hero" style="min-height:50vh">
+            <div class="hero-bg"></div>
+            <div class="hero-content">
+                <span class="hero-eyebrow">Repair</span>
+                <h1>Fast Generator<br><em>Repair Services</em></h1>
+                <p>Diagnostic-first repair on every major brand — no guesswork.</p>
+            </div>
+        </section>
+
+        <section class="section section-alt">
+            <div class="container">
+                <div class="text-center" style="margin-bottom:2rem">
+                    <span class="section-label reveal">Repair Highlights</span>
+                    <h2 class="section-title reveal delay-1">Rapid Repair Photo Roundup</h2>
+                    <p class="section-sub reveal delay-2">Three numbered repair images that highlight our fast response and quality work.</p>
+                </div>
+                <div class="hero-gallery">
+                    <article class="hero-card reveal">
+                        <img src="hero1_2.jpg" alt="Repair example 01" />
+                        <div class="hero-card-label">
+                            <span class="hero-card-number">01</span>
+                            <span class="hero-card-title">On-site diagnostics</span>
+                        </div>
+                    </article>
+                    <article class="hero-card reveal delay-1">
+                        <img src="hero1_3.jpg" alt="Repair example 02" />
+                        <div class="hero-card-label">
+                            <span class="hero-card-number">02</span>
+                            <span class="hero-card-title">Parts replacement and repair</span>
+                        </div>
+                    </article>
+                    <article class="hero-card reveal delay-2">
+                        <img src="hero2_1.jpg" alt="Repair example 03" />
+                        <div class="hero-card-label">
+                            <span class="hero-card-number">03</span>
+                            <span class="hero-card-title">System restore confirmation</span>
+                        </div>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <section class="section">
+            <div class="container">
+                <div class="grid-2-1" style="align-items:start">
+                    <div class="reveal-left">
+                        <h3
+                            style="font-family:'Barlow Condensed',sans-serif;font-size:1.4rem;font-weight:800;margin-bottom:1rem">
+                            Supported Brands</h3>
+                        <div style="display:flex;flex-wrap:wrap;gap:0.5rem;margin-bottom:0.7rem">
+                            <span class="brand-tag">Generac</span>
+                            <span class="brand-tag">Kohler</span>
+                            <span class="brand-tag">Cummins</span>
+                            <span class="brand-tag">Briggs &amp; Stratton</span>
+                        </div>
+                        <p style="font-size:0.85rem;color:var(--gray);margin-bottom:2.5rem">Plus most other major
+                            generator manufacturers.</p>
+                        <div style="text-align:center">
+                            <a class="btn btn-primary" href="#" onclick="showPage('emergency')">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2.5">
+                                    <path
+                                        d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 13.5 19.79 19.79 0 0 1 1.61 4.9 2 2 0 0 1 3.58 2.72h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 10.36a16 16 0 0 0 6 6l.92-.92a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 21.72 18v-1.08z" />
+                                </svg>
+                                Emergency Repair: Call Now
+                            </a>
+                        </div>
+                    </div>
+                    <div class="reveal-right">
+                        <h3
+                            style="font-family:'Barlow Condensed',sans-serif;font-size:1.4rem;font-weight:800;margin-bottom:1rem">
+                            Common Repairs</h3>
+                        <div class="repair-list">
+                            <div class="repair-item"><span class="repair-warn"><svg width="16" height="16"
+                                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path
+                                            d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z" />
+                                        <line x1="12" y1="9" x2="12" y2="13" />
+                                        <line x1="12" y1="17" x2="12.01" y2="17" />
+                                    </svg></span>Starting Problems</div>
+                            <div class="repair-item"><span class="repair-warn"><svg width="16" height="16"
+                                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path
+                                            d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z" />
+                                        <line x1="12" y1="9" x2="12" y2="13" />
+                                        <line x1="12" y1="17" x2="12.01" y2="17" />
+                                    </svg></span>Battery Failures</div>
+                            <div class="repair-item"><span class="repair-warn"><svg width="16" height="16"
+                                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path
+                                            d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z" />
+                                        <line x1="12" y1="9" x2="12" y2="13" />
+                                        <line x1="12" y1="17" x2="12.01" y2="17" />
+                                    </svg></span>Fuel System Issues</div>
+                            <div class="repair-item"><span class="repair-warn"><svg width="16" height="16"
+                                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path
+                                            d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z" />
+                                        <line x1="12" y1="9" x2="12" y2="13" />
+                                        <line x1="12" y1="17" x2="12.01" y2="17" />
+                                    </svg></span>Control Panel Errors</div>
+                            <div class="repair-item"><span class="repair-warn"><svg width="16" height="16"
+                                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path
+                                            d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z" />
+                                        <line x1="12" y1="9" x2="12" y2="13" />
+                                        <line x1="12" y1="17" x2="12.01" y2="17" />
+                                    </svg></span>Transfer Switch Problems</div>
+                            <div class="repair-item"><span class="repair-warn"><svg width="16" height="16"
+                                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path
+                                            d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z" />
+                                        <line x1="12" y1="9" x2="12" y2="13" />
+                                        <line x1="12" y1="17" x2="12.01" y2="17" />
+                                    </svg></span>Engine Diagnostics</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="cta-section">
+            <div class="container">
+                <h2 class="reveal">Ready For Reliable Backup Power?</h2>
+                <p class="reveal delay-1">Schedule your free consultation today.</p>
+                <div class="cta-btns reveal delay-2">
+                    <a class="btn btn-secondary" href="#" onclick="showPage('contact')">Request Estimate</a>
+                    <a class="btn btn-outline-red" href="#" onclick="showPage('emergency')"><svg width="14" height="14"
+                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                            <path
+                                d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 13.5 19.79 19.79 0 0 1 1.61 4.9 2 2 0 0 1 3.58 2.72h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 10.36a16 16 0 0 0 6 6l.92-.92a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 21.72 18v-1.08z" />
+                        </svg>Call Emergency Service</a>
+                </div>
+            </div>
+        </section>
+        <div id="footer-repair"></div>
+    </div>
+
+    <!-- ============================================================
+     EMERGENCY PAGE
+     ============================================================ -->
+    <div id="page-emergency" class="page">
+        <section class="hero hero-emergency" style="min-height:60vh">
+            <div class="hero-bg"></div>
+            <div class="hero-content">
+                <span class="hero-eyebrow">Emergency Service</span>
+                <h1>24/7 Emergency<br><em>Generator Service</em></h1>
+                <p>When the power fails, we're ready.</p>
+                <div class="hero-btns">
+                    <a class="btn btn-primary" href="tel:8135551234">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2.5">
+                            <path
+                                d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 13.5 19.79 19.79 0 0 1 1.61 4.9 2 2 0 0 1 3.58 2.72h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 10.36a16 16 0 0 0 6 6l.92-.92a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 21.72 18v-1.08z" />
+                        </svg>
+                        Call (813) 555-1234
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <section class="section section-alt">
+            <div class="container">
+                <div class="text-center" style="margin-bottom:2rem">
+                    <span class="section-label reveal">Emergency Highlights</span>
+                    <h2 class="section-title reveal delay-1">Emergency Response Gallery</h2>
+                    <p class="section-sub reveal delay-2">Three numbered emergency service images that show how we act fast when outages happen.</p>
+                </div>
+                <div class="hero-gallery">
+                    <article class="hero-card reveal">
+                        <img src="hero3_1.jpg" alt="Emergency service example 01" />
+                        <div class="hero-card-label">
+                            <span class="hero-card-number">01</span>
+                            <span class="hero-card-title">Rapid dispatch to your site</span>
+                        </div>
+                    </article>
+                    <article class="hero-card reveal delay-1">
+                        <img src="hero3_2.jpg" alt="Emergency service example 02" />
+                        <div class="hero-card-label">
+                            <span class="hero-card-number">02</span>
+                            <span class="hero-card-title">On-site generator repair</span>
+                        </div>
+                    </article>
+                    <article class="hero-card reveal delay-2">
+                        <img src="hero4.jpg" alt="Emergency service example 03" />
+                        <div class="hero-card-label">
+                            <span class="hero-card-number">03</span>
+                            <span class="hero-card-title">Power restored quickly</span>
+                        </div>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <section class="section">
+            <div class="container">
+                <div class="grid-2-1" style="align-items:start;gap:3rem">
+                    <div>
+                        <h2 class="section-title reveal" style="margin-bottom:1.5rem">What's Included</h2>
+                        <div class="emergency-features reveal delay-1">
+                            <div class="emerg-feat">
+                                <div class="emerg-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"
+                                        stroke="currentColor" stroke-width="2">
+                                        <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
+                                    </svg></div>
+                                <span style="font-weight:600">Rapid Dispatch</span>
+                            </div>
+                            <div class="emerg-feat">
+                                <div class="emerg-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"
+                                        stroke="currentColor" stroke-width="2">
+                                        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+                                        <circle cx="9" cy="7" r="4" />
+                                        <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
+                                        <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+                                    </svg></div>
+                                <span style="font-weight:600">Certified Technicians</span>
+                            </div>
+                            <div class="emerg-feat">
+                                <div class="emerg-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"
+                                        stroke="currentColor" stroke-width="2">
+                                        <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
+                                        <polyline points="9 22 9 12 15 12 15 22" />
+                                    </svg></div>
+                                <span style="font-weight:600">Residential Service</span>
+                            </div>
+                            <div class="emerg-feat">
+                                <div class="emerg-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"
+                                        stroke="currentColor" stroke-width="2">
+                                        <rect x="3" y="3" width="7" height="7" />
+                                        <rect x="14" y="3" width="7" height="7" />
+                                        <rect x="14" y="14" width="7" height="7" />
+                                        <rect x="3" y="14" width="7" height="7" />
+                                    </svg></div>
+                                <span style="font-weight:600">Commercial Service</span>
+                            </div>
+                            <div class="emerg-feat">
+                                <div class="emerg-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"
+                                        stroke="currentColor" stroke-width="2">
+                                        <path d="M20 17.58A5 5 0 0 0 18 8h-1.26A8 8 0 1 0 4 16.25" />
+                                        <line x1="8" y1="16" x2="8.01" y2="16" />
+                                        <line x1="8" y1="20" x2="8.01" y2="20" />
+                                        <line x1="12" y1="18" x2="12.01" y2="18" />
+                                        <line x1="12" y1="22" x2="12.01" y2="22" />
+                                        <line x1="16" y1="16" x2="16.01" y2="16" />
+                                        <line x1="16" y1="20" x2="16.01" y2="20" />
+                                    </svg></div>
+                                <span style="font-weight:600">Storm Response</span>
+                            </div>
+                            <div class="emerg-feat">
+                                <div class="emerg-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"
+                                        stroke="currentColor" stroke-width="2">
+                                        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+                                    </svg></div>
+                                <span style="font-weight:600">Priority Contracts</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="reveal-right">
+                        <div class="form-card">
+                            <div class="form-title">Emergency Contact Form</div>
+                            <div class="form-row">
+                                <div class="form-group"><input type="text" placeholder="Full Name" /></div>
+                                <div class="form-group"><input type="tel" placeholder="Phone" /></div>
+                            </div>
+                            <div class="form-group"><input type="email" placeholder="Email" /></div>
+                            <div class="form-group"><select>
+                                    <option>Service Needed</option>
+                                    <option>Generator Won't Start</option>
+                                    <option>Power Outage</option>
+                                    <option>Storm Damage</option>
+                                    <option>Other Emergency</option>
+                                </select></div>
+                            <div class="form-group"><textarea placeholder="Tell us about your project..."></textarea>
+                            </div>
+                            <button class="form-submit">Send Request</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <div id="footer-emergency"></div>
+    </div>
+
+    <!-- ============================================================
+     PLANS PAGE
+     ============================================================ -->
+    <div id="page-plans" class="page">
+        <section class="hero" style="min-height:50vh">
+            <div class="hero-bg"></div>
+            <div class="hero-content">
+                <span class="hero-eyebrow">Service Plans</span>
+                <h1>Generator Maintenance<br><em>Plans</em></h1>
+                <p>Choose protection that matches the way you use power.</p>
+            </div>
+        </section>
+
+        <section class="section section-alt">
+            <div class="container">
+                <div class="text-center" style="margin-bottom:2rem">
+                    <span class="section-label reveal">Plan Highlights</span>
+                    <h2 class="section-title reveal delay-1">Service Plan Project Views</h2>
+                    <p class="section-sub reveal delay-2">Three numbered images showing plan work, maintenance visits, and system checks.</p>
+                </div>
+                <div class="hero-gallery">
+                    <article class="hero-card reveal">
+                        <img src="hero5.jpg" alt="Plans example 01" />
+                        <div class="hero-card-label">
+                            <span class="hero-card-number">01</span>
+                            <span class="hero-card-title">Annual inspection photo</span>
+                        </div>
+                    </article>
+                    <article class="hero-card reveal delay-1">
+                        <img src="hero5_1.jpg" alt="Plans example 02" />
+                        <div class="hero-card-label">
+                            <span class="hero-card-number">02</span>
+                            <span class="hero-card-title">Preventive maintenance visit</span>
+                        </div>
+                    </article>
+                    <article class="hero-card reveal delay-2">
+                        <img src="hero5_2.jpg" alt="Plans example 03" />
+                        <div class="hero-card-label">
+                            <span class="hero-card-number">03</span>
+                            <span class="hero-card-title">Priority service support</span>
+                        </div>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <section class="section">
+            <div class="container">
+                <div class="pricing-grid reveal">
+                    <div class="pricing-card">
+                        <div class="pricing-tag">Best Value</div>
+                        <div class="pricing-title">Basic Annual Inspection</div>
+                        <div class="pricing-features">
+                            <div class="pricing-feat"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"
+                                    stroke="currentColor" stroke-width="2.5">
+                                    <polyline points="20 6 9 17 4 12" />
+                                </svg>1 Annual Inspection</div>
+                            <div class="pricing-feat"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"
+                                    stroke="currentColor" stroke-width="2.5">
+                                    <polyline points="20 6 9 17 4 12" />
+                                </svg>Multi-Point Check</div>
+                            <div class="pricing-feat"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"
+                                    stroke="currentColor" stroke-width="2.5">
+                                    <polyline points="20 6 9 17 4 12" />
+                                </svg>Battery &amp; Fluids</div>
+                            <div class="pricing-feat"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"
+                                    stroke="currentColor" stroke-width="2.5">
+                                    <polyline points="20 6 9 17 4 12" />
+                                </svg>Performance Test</div>
+                            <div class="pricing-feat"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"
+                                    stroke="currentColor" stroke-width="2.5">
+                                    <polyline points="20 6 9 17 4 12" />
+                                </svg>Service Report</div>
+                        </div>
+                        <button class="pricing-btn" onclick="showPage('contact')">Enroll Now</button>
+                    </div>
+                    <div class="pricing-card popular">
+                        <div class="pricing-tag pop">Most Popular</div>
+                        <div class="pricing-title">Preventive Maintenance</div>
+                        <div class="pricing-features">
+                            <div class="pricing-feat"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"
+                                    stroke="currentColor" stroke-width="2.5">
+                                    <polyline points="20 6 9 17 4 12" />
+                                </svg>2 Visits per Year</div>
+                            <div class="pricing-feat"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"
+                                    stroke="currentColor" stroke-width="2.5">
+                                    <polyline points="20 6 9 17 4 12" />
+                                </svg>Oil &amp; Filter Changes</div>
+                            <div class="pricing-feat"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"
+                                    stroke="currentColor" stroke-width="2.5">
+                                    <polyline points="20 6 9 17 4 12" />
+                                </svg>Battery Testing</div>
+                            <div class="pricing-feat"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"
+                                    stroke="currentColor" stroke-width="2.5">
+                                    <polyline points="20 6 9 17 4 12" />
+                                </svg>Load Test</div>
+                            <div class="pricing-feat"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"
+                                    stroke="currentColor" stroke-width="2.5">
+                                    <polyline points="20 6 9 17 4 12" />
+                                </svg>10% Off Repairs</div>
+                            <div class="pricing-feat"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"
+                                    stroke="currentColor" stroke-width="2.5">
+                                    <polyline points="20 6 9 17 4 12" />
+                                </svg>Priority Scheduling</div>
+                        </div>
+                        <button class="pricing-btn" onclick="showPage('contact')">Enroll Now</button>
+                    </div>
+                    <div class="pricing-card">
+                        <div class="pricing-tag">Total Coverage</div>
+                        <div class="pricing-title">Premium Priority</div>
+                        <div class="pricing-features">
+                            <div class="pricing-feat"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"
+                                    stroke="currentColor" stroke-width="2.5">
+                                    <polyline points="20 6 9 17 4 12" />
+                                </svg>Quarterly Visits</div>
+                            <div class="pricing-feat"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"
+                                    stroke="currentColor" stroke-width="2.5">
+                                    <polyline points="20 6 9 17 4 12" />
+                                </svg>All Preventive Services</div>
+                            <div class="pricing-feat"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"
+                                    stroke="currentColor" stroke-width="2.5">
+                                    <polyline points="20 6 9 17 4 12" />
+                                </svg>24/7 Emergency Priority</div>
+                            <div class="pricing-feat"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"
+                                    stroke="currentColor" stroke-width="2.5">
+                                    <polyline points="20 6 9 17 4 12" />
+                                </svg>20% Off Repairs</div>
+                            <div class="pricing-feat"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"
+                                    stroke="currentColor" stroke-width="2.5">
+                                    <polyline points="20 6 9 17 4 12" />
+                                </svg>Free Diagnostics</div>
+                            <div class="pricing-feat"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"
+                                    stroke="currentColor" stroke-width="2.5">
+                                    <polyline points="20 6 9 17 4 12" />
+                                </svg>Storm Season Pre-Check</div>
+                        </div>
+                        <button class="pricing-btn" onclick="showPage('contact')">Enroll Now</button>
+                    </div>
+                </div>
+
+                <div style="margin-top:4rem;text-align:center">
+                    <h3 class="section-title reveal" style="font-size:1.8rem">Member Benefits</h3>
+                    <div class="benefits-tags reveal delay-1" style="margin-top:1.2rem">
+                        <span class="badge">Priority Scheduling</span>
+                        <span class="badge">Reduced Repair Costs</span>
+                        <span class="badge">Routine Maintenance</span>
+                        <span class="badge">Extended Equipment Life</span>
+                        <span class="badge">Emergency Support</span>
+                    </div>
+                </div>
+
+                <div style="max-width:600px;margin:4rem auto 0" class="reveal">
+                    <div class="form-card">
+                        <div class="form-title">Enroll in a Maintenance Plan</div>
+                        <div class="form-row">
+                            <div class="form-group"><input type="text" placeholder="Full Name" /></div>
+                            <div class="form-group"><input type="tel" placeholder="Phone" /></div>
+                        </div>
+                        <div class="form-group"><input type="email" placeholder="Email" /></div>
+                        <div class="form-group"><select>
+                                <option>Service Needed</option>
+                                <option>Basic Annual</option>
+                                <option>Preventive Maintenance</option>
+                                <option>Premium Priority</option>
+                            </select></div>
+                        <div class="form-group"><textarea placeholder="Tell us about your project..."></textarea></div>
+                        <button class="form-submit">Send Request</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <div id="footer-plans"></div>
+    </div>
+
+    <!-- ============================================================
+     COMMERCIAL PAGE
+     ============================================================ -->
+    <div id="page-commercial" class="page">
+        <section class="hero" style="min-height:52vh">
+            <div class="hero-bg"></div>
+            <div class="hero-content">
+                <span class="hero-eyebrow">Commercial</span>
+                <h1>Commercial Backup<br><em>Power Solutions</em></h1>
+                <p>Turnkey service agreements that keep your operations online.</p>
+            </div>
+        </section>
+
+        <section class="section section-alt">
+            <div class="container">
+                <div class="text-center" style="margin-bottom:2rem">
+                    <span class="section-label reveal">Commercial Highlights</span>
+                    <h2 class="section-title reveal delay-1">Commercial Project Gallery</h2>
+                    <p class="section-sub reveal delay-2">Three numbered commercial project photos that show our experienced installations and system builds.</p>
+                </div>
+                <div class="hero-gallery">
+                    <article class="hero-card reveal">
+                        <img src="hero6.jpg" alt="Commercial project example 01" />
+                        <div class="hero-card-label">
+                            <span class="hero-card-number">01</span>
+                            <span class="hero-card-title">Large-scale backup installation</span>
+                        </div>
+                    </article>
+                    <article class="hero-card reveal delay-1">
+                        <img src="hero6_1.jpg" alt="Commercial project example 02" />
+                        <div class="hero-card-label">
+                            <span class="hero-card-number">02</span>
+                            <span class="hero-card-title">Generator and switch integration</span>
+                        </div>
+                    </article>
+                    <article class="hero-card reveal delay-2">
+                        <img src="hero6_2.jpg" alt="Commercial project example 03" />
+                        <div class="hero-card-label">
+                            <span class="hero-card-number">03</span>
+                            <span class="hero-card-title">Enterprise-grade commissioning</span>
+                        </div>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <section class="section">
+            <div class="container">
+                <div class="text-center" style="margin-bottom:2.5rem">
+                    <h2 class="section-title reveal">Industries We Serve</h2>
+                </div>
+                <div class="grid-3 reveal delay-1" style="margin-bottom:3.5rem">
+                    <div class="industry-card">
+                        <div class="industry-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="2">
+                                <path d="M22 12h-4l-3 9L9 3l-3 9H2" />
+                            </svg></div><span class="industry-label">Healthcare</span>
+                    </div>
+                    <div class="industry-card">
+                        <div class="industry-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="2">
+                                <circle cx="9" cy="21" r="1" />
+                                <circle cx="20" cy="21" r="1" />
+                                <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6" />
+                            </svg></div><span class="industry-label">Retail</span>
+                    </div>
+                    <div class="industry-card">
+                        <div class="industry-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="2">
+                                <rect x="2" y="7" width="20" height="14" rx="2" ry="2" />
+                                <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16" />
+                            </svg></div><span class="industry-label">Industrial</span>
+                    </div>
+                    <div class="industry-card">
+                        <div class="industry-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="2">
+                                <rect x="3" y="3" width="7" height="7" />
+                                <rect x="14" y="3" width="7" height="7" />
+                                <rect x="14" y="14" width="7" height="7" />
+                                <rect x="3" y="14" width="7" height="7" />
+                            </svg></div><span class="industry-label">Property Management</span>
+                    </div>
+                    <div class="industry-card">
+                        <div class="industry-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="2">
+                                <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
+                            </svg></div><span class="industry-label">Hospitality</span>
+                    </div>
+                    <div class="industry-card">
+                        <div class="industry-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="2">
+                                <rect x="2" y="3" width="20" height="14" rx="2" ry="2" />
+                                <line x1="8" y1="21" x2="16" y2="21" />
+                                <line x1="12" y1="17" x2="12" y2="21" />
+                            </svg></div><span class="industry-label">Office Buildings</span>
+                    </div>
+                </div>
+
+                <div class="text-center" style="margin-bottom:1.5rem">
+                    <h2 class="section-title reveal">Commercial Services</h2>
+                </div>
+                <div class="service-checks reveal delay-1" style="margin-bottom:3.5rem">
+                    <div class="service-check"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2.5">
+                            <polyline points="20 6 9 17 4 12" />
+                        </svg>Generator Installation</div>
+                    <div class="service-check"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2.5">
+                            <polyline points="20 6 9 17 4 12" />
+                        </svg>Preventive Maintenance</div>
+                    <div class="service-check"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2.5">
+                            <polyline points="20 6 9 17 4 12" />
+                        </svg>Emergency Repairs</div>
+                    <div class="service-check"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2.5">
+                            <polyline points="20 6 9 17 4 12" />
+                        </svg>Load Testing</div>
+                    <div class="service-check"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2.5">
+                            <polyline points="20 6 9 17 4 12" />
+                        </svg>Compliance Inspections</div>
+                    <div class="service-check"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2.5">
+                            <polyline points="20 6 9 17 4 12" />
+                        </svg>Custom Service Agreements</div>
+                </div>
+            </div>
+        </section>
+
+        <section class="cta-section">
+            <div class="container">
+                <h2 class="reveal">Build a Custom Commercial Plan</h2>
+                <p class="reveal delay-1">Schedule a site assessment with our commercial team.</p>
+                <div class="cta-btns reveal delay-2">
+                    <a class="btn btn-secondary" href="#" onclick="showPage('contact')">Request Estimate</a>
+                    <a class="btn btn-outline-red" href="#" onclick="showPage('emergency')"><svg width="14" height="14"
+                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                            <path
+                                d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 13.5 19.79 19.79 0 0 1 1.61 4.9 2 2 0 0 1 3.58 2.72h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 10.36a16 16 0 0 0 6 6l.92-.92a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 21.72 18v-1.08z" />
+                        </svg>Call Emergency Service</a>
+                </div>
+            </div>
+        </section>
+        <div id="footer-commercial"></div>
+    </div>
+
+    <!-- ============================================================
+     GALLERY PAGE
+     ============================================================ -->
+    <div id="page-gallery" class="page">
+        <section class="hero" style="min-height:45vh">
+            <div class="hero-bg"></div>
+            <div class="hero-content">
+                <span class="hero-eyebrow">Gallery</span>
+                <h1>Recent <em>Projects</em></h1>
+                <p>A small selection of installations and service work from across Tampa Bay.</p>
+            </div>
+        </section>
+
+        <section class="section section-alt">
+            <div class="container">
+                <div class="text-center" style="margin-bottom:2rem">
+                    <span class="section-label reveal">Gallery Highlights</span>
+                    <h2 class="section-title reveal delay-1">Featured Project Snapshots</h2>
+                    <p class="section-sub reveal delay-2">Three numbered gallery images that showcase the visual quality of our work.</p>
+                </div>
+                <div class="hero-gallery">
+                    <article class="hero-card reveal">
+                        <img src="hero7_1.jpg" alt="Featured gallery image 01" />
+                        <div class="hero-card-label">
+                            <span class="hero-card-number">01</span>
+                            <span class="hero-card-title">Residential backup install</span>
+                        </div>
+                    </article>
+                    <article class="hero-card reveal delay-1">
+                        <img src="hero7_2.webp" alt="Featured gallery image 02" />
+                        <div class="hero-card-label">
+                            <span class="hero-card-number">02</span>
+                            <span class="hero-card-title">Commercial generator setup</span>
+                        </div>
+                    </article>
+                    <article class="hero-card reveal delay-2">
+                        <img src="hero8_2.jpg" alt="Featured gallery image 03" />
+                        <div class="hero-card-label">
+                            <span class="hero-card-number">03</span>
+                            <span class="hero-card-title">Maintenance and service work</span>
+                        </div>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <section class="section">
+            <div class="container">
+                <div class="filter-tabs reveal">
+                    <button class="filter-btn active" data-filter="all">All</button>
+                    <button class="filter-btn" data-filter="residential">Residential</button>
+                    <button class="filter-btn" data-filter="commercial">Commercial</button>
+                    <button class="filter-btn" data-filter="replacements">Replacements</button>
+                    <button class="filter-btn" data-filter="maintenance">Maintenance</button>
+                    <button class="filter-btn" data-filter="emergency">Emergency</button>
+                    <button class="filter-btn" data-filter="before-after">Before &amp; After</button>
+                </div>
+                <div class="gallery-grid" id="galleryGrid">
+                    <!-- Items injected by JS -->
+                </div>
+            </div>
+        </section>
+
+        <section class="cta-section">
+            <div class="container">
+                <h2 class="reveal">Want to See Your Project Here?</h2>
+                <p class="reveal delay-1">Get a free estimate on your generator installation today.</p>
+                <div class="cta-btns reveal delay-2">
+                    <a class="btn btn-secondary" href="#" onclick="showPage('contact')">Request Estimate</a>
+                    <a class="btn btn-outline-red" href="#" onclick="showPage('emergency')"><svg width="14" height="14"
+                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                            <path
+                                d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 13.5 19.79 19.79 0 0 1 1.61 4.9 2 2 0 0 1 3.58 2.72h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 10.36a16 16 0 0 0 6 6l.92-.92a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 21.72 18v-1.08z" />
+                        </svg>Call Emergency Service</a>
+                </div>
+            </div>
+        </section>
+        <div id="footer-gallery"></div>
+    </div>
+
+    <!-- ============================================================
+     REVIEWS PAGE
+     ============================================================ -->
+    <div id="page-reviews" class="page">
+        <section class="hero" style="min-height:45vh">
+            <div class="hero-bg"></div>
+            <div class="hero-content">
+                <span class="hero-eyebrow">Testimonials</span>
+                <h1>What Our<br><em>Customers Say</em></h1>
+                <p>Real reviews from Tampa Bay homeowners and businesses.</p>
+            </div>
+        </section>
+
+        <section class="section section-alt">
+            <div class="container">
+                <div class="text-center" style="margin-bottom:2rem">
+                    <span class="section-label reveal">Reviews Highlights</span>
+                    <h2 class="section-title reveal delay-1">Customer Service in Action</h2>
+                    <p class="section-sub reveal delay-2">Three numbered service snapshots that complement the testimonials below.</p>
+                </div>
+                <div class="hero-gallery">
+                    <article class="hero-card reveal">
+                        <img src="hero9_1.jpg" alt="Review highlight image 01" />
+                        <div class="hero-card-label">
+                            <span class="hero-card-number">01</span>
+                            <span class="hero-card-title">Satisfied residential customer</span>
+                        </div>
+                    </article>
+                    <article class="hero-card reveal delay-1">
+                        <img src="hero9_2.jpg" alt="Review highlight image 02" />
+                        <div class="hero-card-label">
+                            <span class="hero-card-number">02</span>
+                            <span class="hero-card-title">Commercial service success</span>
+                        </div>
+                    </article>
+                    <article class="hero-card reveal delay-2">
+                        <img src="hero10_1.jpg" alt="Review highlight image 03" />
+                        <div class="hero-card-label">
+                            <span class="hero-card-number">03</span>
+                            <span class="hero-card-title">Fast response and repair</span>
+                        </div>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <section class="section">
+            <div class="container">
+                <div class="grid-3">
+                    <div class="review-card reveal">
+                        <div class="stars"><span class="star">★</span><span class="star">★</span><span
+                                class="star">★</span><span class="star">★</span><span class="star">★</span></div>
+                        <p class="review-text">"Professional team, on-time, and the unit kicked on within seconds during
+                            the hurricane. Worth every penny."</p>
+                        <div class="reviewer">Maria Hernandez</div>
+                        <div class="reviewer-loc">Tampa</div>
+                    </div>
+                    <div class="review-card reveal delay-1">
+                        <div class="stars"><span class="star">★</span><span class="star">★</span><span
+                                class="star">★</span><span class="star">★</span><span class="star">★</span></div>
+                        <p class="review-text">"Called at midnight during an outage — tech was on-site within the hour.
+                            True 24/7 service."</p>
+                        <div class="reviewer">James W.</div>
+                        <div class="reviewer-loc">St. Petersburg</div>
+                    </div>
+                    <div class="review-card reveal delay-2">
+                        <div class="stars"><span class="star">★</span><span class="star">★</span><span
+                                class="star">★</span><span class="star">★</span><span class="star">★</span></div>
+                        <p class="review-text">"Quarterly maintenance contract on multiple commercial units. Zero
+                            failures in three years."</p>
+                        <div class="reviewer">Coastal Medical Group</div>
+                        <div class="reviewer-loc">Clearwater</div>
+                    </div>
+                    <div class="review-card reveal delay-1">
+                        <div class="stars"><span class="star">★</span><span class="star">★</span><span
+                                class="star">★</span><span class="star">★</span><span class="star">★</span></div>
+                        <p class="review-text">"Comprehensive load analysis and a clean install. Highly recommended for
+                            whole-home setups."</p>
+                        <div class="reviewer">Robert L.</div>
+                        <div class="reviewer-loc">Brandon</div>
+                    </div>
+                    <div class="review-card reveal delay-2">
+                        <div class="stars"><span class="star">★</span><span class="star">★</span><span
+                                class="star">★</span><span class="star">★</span><span class="star">★</span></div>
+                        <p class="review-text">"From quote to commissioning in under three weeks. Permits handled, no
+                            hassle."</p>
+                        <div class="reviewer">Sandra P.</div>
+                        <div class="reviewer-loc">Riverview</div>
+                    </div>
+                    <div class="review-card reveal delay-3">
+                        <div class="stars"><span class="star">★</span><span class="star">★</span><span
+                                class="star">★</span><span class="star">★</span><span class="star">★</span></div>
+                        <p class="review-text">"Reliable partner for our multi-site property portfolio. Compliance
+                            reports are spotless."</p>
+                        <div class="reviewer">Bayshore Properties</div>
+                        <div class="reviewer-loc">Tampa Bay</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="cta-section">
+            <div class="container">
+                <h2 class="reveal">Ready For Reliable Backup Power?</h2>
+                <p class="reveal delay-1">Schedule your free consultation today.</p>
+                <div class="cta-btns reveal delay-2">
+                    <a class="btn btn-secondary" href="#" onclick="showPage('contact')">Request Estimate</a>
+                    <a class="btn btn-outline-red" href="#" onclick="showPage('emergency')"><svg width="14" height="14"
+                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                            <path
+                                d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 13.5 19.79 19.79 0 0 1 1.61 4.9 2 2 0 0 1 3.58 2.72h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 10.36a16 16 0 0 0 6 6l.92-.92a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 21.72 18v-1.08z" />
+                        </svg>Call Emergency Service</a>
+                </div>
+            </div>
+        </section>
+        <div id="footer-reviews"></div>
+    </div>
+
+    <!-- ============================================================
+     FAQS PAGE
+     ============================================================ -->
+    <div id="page-faqs" class="page">
+        <section class="hero" style="min-height:45vh">
+            <div class="hero-bg"></div>
+            <div class="hero-content">
+                <span class="hero-eyebrow">FAQs</span>
+                <h1>Frequently Asked<br><em>Questions</em></h1>
+                <p>Quick answers about cost, sizing, installation, and service.</p>
+            </div>
+        </section>
+
+        <section class="section section-alt">
+            <div class="container">
+                <div class="text-center" style="margin-bottom:2rem">
+                    <span class="section-label reveal">FAQs Highlights</span>
+                    <h2 class="section-title reveal delay-1">Visual Help & Answers</h2>
+                    <p class="section-sub reveal delay-2">Three numbered images that help illustrate common questions and solutions.</p>
+                </div>
+                <div class="hero-gallery">
+                    <article class="hero-card reveal">
+                        <img src="hero10_2.jpg" alt="FAQ highlight image 01" />
+                        <div class="hero-card-label">
+                            <span class="hero-card-number">01</span>
+                            <span class="hero-card-title">Sizing and system design</span>
+                        </div>
+                    </article>
+                    <article class="hero-card reveal delay-1">
+                        <img src="hero11_1.jpg" alt="FAQ highlight image 02" />
+                        <div class="hero-card-label">
+                            <span class="hero-card-number">02</span>
+                            <span class="hero-card-title">Maintenance and reliability</span>
+                        </div>
+                    </article>
+                    <article class="hero-card reveal delay-2">
+                        <img src="hero11_2.jpg" alt="FAQ highlight image 03" />
+                        <div class="hero-card-label">
+                            <span class="hero-card-number">03</span>
+                            <span class="hero-card-title">Emergency support process</span>
+                        </div>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <section class="section">
+            <div class="container">
+                <div class="faq-list reveal">
+                    <div class="faq-item open">
+                        <div class="faq-q" onclick="toggleFaq(this)">How much does a generator cost?<span
+                                class="faq-chevron"><svg width="12" height="12" viewBox="0 0 24 24" fill="none"
+                                    stroke="currentColor" stroke-width="3">
+                                    <polyline points="18 15 12 9 6 15" />
+                                </svg></span></div>
+                        <div class="faq-a">Whole-home standby generator systems typically range from $6,000 to $20,000+
+                            installed, depending on size, fuel type, transfer switch, and site work. Commercial systems
+                            vary widely. We provide free written estimates.</div>
+                    </div>
+                    <div class="faq-item">
+                        <div class="faq-q" onclick="toggleFaq(this)">How long does installation take?<span
+                                class="faq-chevron"><svg width="12" height="12" viewBox="0 0 24 24" fill="none"
+                                    stroke="currentColor" stroke-width="3">
+                                    <polyline points="18 15 12 9 6 15" />
+                                </svg></span></div>
+                        <div class="faq-a">Most residential installations are completed in 1–2 days. Commercial
+                            installations may take several days depending on the scope of work, permitting timelines,
+                            and site conditions.</div>
+                    </div>
+                    <div class="faq-item">
+                        <div class="faq-q" onclick="toggleFaq(this)">What size generator do I need?<span
+                                class="faq-chevron"><svg width="12" height="12" viewBox="0 0 24 24" fill="none"
+                                    stroke="currentColor" stroke-width="3">
+                                    <polyline points="18 15 12 9 6 15" />
+                                </svg></span></div>
+                        <div class="faq-a">Sizing depends on your home or business's square footage, the appliances you
+                            want to run, and your fuel type. Our technicians perform a load analysis to recommend the
+                            correct size — typically 10–22 kW for homes and larger for commercial.</div>
+                    </div>
+                    <div class="faq-item">
+                        <div class="faq-q" onclick="toggleFaq(this)">Do generators require maintenance?<span
+                                class="faq-chevron"><svg width="12" height="12" viewBox="0 0 24 24" fill="none"
+                                    stroke="currentColor" stroke-width="3">
+                                    <polyline points="18 15 12 9 6 15" />
+                                </svg></span></div>
+                        <div class="faq-a">Yes. Like any engine-powered equipment, standby generators require regular
+                            oil changes, filter replacements, battery testing, and load testing to remain reliable.
+                            Annual service is the minimum recommendation.</div>
+                    </div>
+                    <div class="faq-item">
+                        <div class="faq-q" onclick="toggleFaq(this)">How often should service be performed?<span
+                                class="faq-chevron"><svg width="12" height="12" viewBox="0 0 24 24" fill="none"
+                                    stroke="currentColor" stroke-width="3">
+                                    <polyline points="18 15 12 9 6 15" />
+                                </svg></span></div>
+                        <div class="faq-a">We recommend servicing your generator at least once a year, ideally before
+                            hurricane season. Our Preventive Maintenance plan includes two visits per year for optimal
+                            reliability.</div>
+                    </div>
+                    <div class="faq-item">
+                        <div class="faq-q" onclick="toggleFaq(this)">Do you offer emergency repairs?<span
+                                class="faq-chevron"><svg width="12" height="12" viewBox="0 0 24 24" fill="none"
+                                    stroke="currentColor" stroke-width="3">
+                                    <polyline points="18 15 12 9 6 15" />
+                                </svg></span></div>
+                        <div class="faq-a">Yes. We offer 24/7 emergency repair service throughout Tampa Bay and Greater
+                            Pinellas County. Call (813) 555-1234 any time for an immediate response.</div>
+                    </div>
+                    <div class="faq-item">
+                        <div class="faq-q" onclick="toggleFaq(this)">What brands do you service?<span
+                                class="faq-chevron"><svg width="12" height="12" viewBox="0 0 24 24" fill="none"
+                                    stroke="currentColor" stroke-width="3">
+                                    <polyline points="18 15 12 9 6 15" />
+                                </svg></span></div>
+                        <div class="faq-a">We service all major brands including Generac, Kohler, Cummins, Briggs &amp;
+                            Stratton, Champion, and most other manufacturers. Our technicians are factory-trained on
+                            leading generator lines.</div>
+                    </div>
+                    <div class="faq-item">
+                        <div class="faq-q" onclick="toggleFaq(this)">Can you service commercial generators?<span
+                                class="faq-chevron"><svg width="12" height="12" viewBox="0 0 24 24" fill="none"
+                                    stroke="currentColor" stroke-width="3">
+                                    <polyline points="18 15 12 9 6 15" />
+                                </svg></span></div>
+                        <div class="faq-a">Absolutely. We handle commercial installations and maintenance for healthcare
+                            facilities, retail centers, office buildings, industrial sites, and property management
+                            portfolios throughout the Tampa Bay area.</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="cta-section">
+            <div class="container">
+                <h2 class="reveal">Still Have Questions?</h2>
+                <p class="reveal delay-1">Our team is happy to walk you through your options.</p>
+                <div class="cta-btns reveal delay-2">
+                    <a class="btn btn-secondary" href="#" onclick="showPage('contact')">Request Estimate</a>
+                    <a class="btn btn-outline-red" href="#" onclick="showPage('emergency')"><svg width="14" height="14"
+                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                            <path
+                                d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 13.5 19.79 19.79 0 0 1 1.61 4.9 2 2 0 0 1 3.58 2.72h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 10.36a16 16 0 0 0 6 6l.92-.92a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 21.72 18v-1.08z" />
+                        </svg>Call Emergency Service</a>
+                </div>
+            </div>
+        </section>
+        <div id="footer-faqs"></div>
+    </div>
+
+    <!-- ============================================================
+     CONTACT PAGE
+     ============================================================ -->
+    <div id="page-contact" class="page">
+        <section class="hero" style="min-height:45vh">
+            <div class="hero-bg"></div>
+            <div class="hero-content">
+                <span class="hero-eyebrow">Contact</span>
+                <h1>Get In <em>Touch</em></h1>
+                <p>Request a quote, schedule service, or reach us 24/7 for emergencies.</p>
+            </div>
+        </section>
+
+        <section class="section section-alt">
+            <div class="container">
+                <div class="text-center" style="margin-bottom:2rem">
+                    <span class="section-label reveal">Contact Highlights</span>
+                    <h2 class="section-title reveal delay-1">Customer Support Snapshot</h2>
+                    <p class="section-sub reveal delay-2">Three numbered images that reflect the kinds of service requests we support.</p>
+                </div>
+                <div class="hero-gallery">
+                    <article class="hero-card reveal">
+                        <img src="hero12_1.jpg" alt="Contact highlight image 01" />
+                        <div class="hero-card-label">
+                            <span class="hero-card-number">01</span>
+                            <span class="hero-card-title">Quick quote and consultation</span>
+                        </div>
+                    </article>
+                    <article class="hero-card reveal delay-1">
+                        <img src="hero1.jpg" alt="Contact highlight image 02" />
+                        <div class="hero-card-label">
+                            <span class="hero-card-number">02</span>
+                            <span class="hero-card-title">Scheduling maintenance visits</span>
+                        </div>
+                    </article>
+                    <article class="hero-card reveal delay-2">
+                        <img src="hero2.jpg" alt="Contact highlight image 03" />
+                        <div class="hero-card-label">
+                            <span class="hero-card-number">03</span>
+                            <span class="hero-card-title">Emergency response support</span>
+                        </div>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <section class="section">
+            <div class="container">
+                <div class="grid-2-1" style="align-items:start;gap:3rem">
+                    <div>
+                        <div class="emerg-banner reveal">
+                            <div class="emerg-banner-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none"
+                                    stroke="currentColor" stroke-width="2">
+                                    <path
+                                        d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z" />
+                                    <line x1="12" y1="9" x2="12" y2="13" />
+                                    <line x1="12" y1="17" x2="12.01" y2="17" />
+                                </svg></div>
+                            <div>
+                                <h3>24/7 Emergency Line</h3>
+                                <p>(813) 555-1234</p>
+                            </div>
+                        </div>
+                        <div style="display:flex;flex-direction:column;gap:0.8rem" class="reveal delay-1">
+                            <div class="contact-info-card">
+                                <div class="contact-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"
+                                        stroke="currentColor" stroke-width="2">
+                                        <path
+                                            d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 13.5 19.79 19.79 0 0 1 1.61 4.9 2 2 0 0 1 3.58 2.72h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 10.36a16 16 0 0 0 6 6l.92-.92a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 21.72 18v-1.08z" />
+                                    </svg></div>
+                                <div>
+                                    <div class="contact-label">Phone</div>
+                                    <div class="contact-val">(813) 555-1234</div>
+                                </div>
+                            </div>
+                            <div class="contact-info-card">
+                                <div class="contact-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"
+                                        stroke="currentColor" stroke-width="2">
+                                        <path
+                                            d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
+                                        <polyline points="22,6 12,13 2,6" />
+                                    </svg></div>
+                                <div>
+                                    <div class="contact-label">Email</div>
+                                    <div class="contact-val">service@npspowersystems.com</div>
+                                </div>
+                            </div>
+                            <div class="contact-info-card">
+                                <div class="contact-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"
+                                        stroke="currentColor" stroke-width="2">
+                                        <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
+                                        <circle cx="12" cy="10" r="3" />
+                                    </svg></div>
+                                <div>
+                                    <div class="contact-label">Service Area</div>
+                                    <div class="contact-val">Tampa Bay &amp; Greater Pinellas County, FL</div>
+                                </div>
+                            </div>
+                            <div class="contact-info-card">
+                                <div class="contact-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"
+                                        stroke="currentColor" stroke-width="2">
+                                        <circle cx="12" cy="12" r="10" />
+                                        <polyline points="12 6 12 12 16 14" />
+                                    </svg></div>
+                                <div>
+                                    <div class="contact-label">Business Hours</div>
+                                    <div class="contact-val">Mon–Fri 8am–6pm · Emergency 24/7</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="map-placeholder reveal delay-2" style="margin-top:1.5rem">
+                            <span>📍 Serving Tampa Bay &amp; Greater Pinellas County</span>
+                        </div>
+                    </div>
+                    <div class="reveal-right">
+                        <div class="form-card">
+                            <div class="form-title">Send Us a Message</div>
+                            <div class="form-row">
+                                <div class="form-group"><input type="text" placeholder="Full Name" /></div>
+                                <div class="form-group"><input type="tel" placeholder="Phone" /></div>
+                            </div>
+                            <div class="form-group"><input type="email" placeholder="Email" /></div>
+                            <div class="form-group"><select>
+                                    <option>Service Needed</option>
+                                    <option>Generator Installation</option>
+                                    <option>Maintenance</option>
+                                    <option>Repair</option>
+                                    <option>Emergency</option>
+                                    <option>Commercial</option>
+                                </select></div>
+                            <div class="form-group"><textarea placeholder="Tell us about your project..."></textarea>
+                            </div>
+                            <button class="form-submit">Send Request</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <div id="footer-contact"></div>
+    </div>
+
+    <!-- BACK TO TOP -->
+    <button id="back-top" onclick="window.scrollTo({top:0,behavior:'smooth'})">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <polyline points="18 15 12 9 6 15" />
+        </svg>
+    </button>
+
+    <!-- FOOTER TEMPLATE -->
+    <template id="footer-tpl">
+        <footer>
+            <div class="container">
+                <div class="footer-grid">
+                    <div class="footer-brand">
+                        <div class="footer-logo"><img src="logo_white.png" alt="NPS Power logo" class="site-logo" /></div>
+                        <p>Reliable backup power solutions for Tampa Bay homes and businesses.</p>
+                    </div>
+                    <div class="footer-col">
+                        <h4>Services</h4>
+                        <ul>
+                            <li><a href="#" onclick="showPage('installation')">Generator Installation</a></li>
+                            <li><a href="#" onclick="showPage('maintenance')">Maintenance</a></li>
+                            <li><a href="#" onclick="showPage('repair')">Repair</a></li>
+                            <li><a href="#" onclick="showPage('emergency')">24/7 Emergency</a></li>
+                            <li><a href="#" onclick="showPage('commercial')">Commercial</a></li>
+                        </ul>
+                    </div>
+                    <div class="footer-col">
+                        <h4>Company</h4>
+                        <ul>
+                            <li><a href="#" onclick="showPage('about')">About Us</a></li>
+                            <li><a href="#" onclick="showPage('plans')">Service Plans</a></li>
+                            <li><a href="#" onclick="showPage('gallery')">Gallery</a></li>
+                            <li><a href="#" onclick="showPage('reviews')">Testimonials</a></li>
+                            <li><a href="#" onclick="showPage('faqs')">FAQs</a></li>
+                        </ul>
+                    </div>
+                    <div class="footer-col">
+                        <h4>Contact</h4>
+                        <div class="footer-contact-item"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="2">
+                                <path
+                                    d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 13.5 19.79 19.79 0 0 1 1.61 4.9 2 2 0 0 1 3.58 2.72h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 10.36a16 16 0 0 0 6 6l.92-.92a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 21.72 18v-1.08z" />
+                            </svg>(813) 555-1234</div>
+                        <div class="footer-contact-item"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="2">
+                                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
+                                <polyline points="22,6 12,13 2,6" />
+                            </svg>service@npspowersystems.com</div>
+                        <div class="footer-contact-item"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="2">
+                                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
+                                <circle cx="12" cy="10" r="3" />
+                            </svg>Tampa Bay, FL</div>
+                        <div class="footer-socials">
+                            <a class="social-btn" href="#"><svg width="14" height="14" viewBox="0 0 24 24"
+                                    fill="currentColor">
+                                    <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z" />
+                                </svg></a>
+                            <a class="social-btn" href="#"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"
+                                    stroke="currentColor" stroke-width="2">
+                                    <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
+                                    <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
+                                    <line x1="17.5" y1="6.5" x2="17.51" y2="6.5" />
+                                </svg></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div style="border-top:1px solid rgba(255,255,255,0.06);">
+                <div class="container">
+                    <div class="footer-bottom">
+                        <span>© 2026 NPS Power Systems LLC. All rights reserved.</span>
+                        <span>Licensed &amp; Insured · Tampa Bay, Florida</span>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </template>
+
+    <script>
+        // ============================================================
+        // GALLERY DATA
+        // ============================================================
+        const galleryItems = [
+            { cat: 'residential', catLabel: 'Residential', name: 'Whole Home Generac 22kW', loc: 'South Tampa', image: 'Generac_22kW.jpg' },
+            { cat: 'commercial', catLabel: 'Commercial', name: 'Medical Office Standby System', loc: 'Clearwater', image: 'Medical_Office.png' },
+            { cat: 'replacements', catLabel: 'Replacements', name: 'Aging Unit Swap-Out', loc: 'St. Petersburg', image: 'Aging_Unit.png' },
+            { cat: 'maintenance', catLabel: 'Maintenance', name: 'Quarterly Service Visit', loc: 'Brandon', image: 'Quarterly_Service.jpg' },
+            { cat: 'emergency', catLabel: 'Emergency', name: 'Post-Storm Restoration', loc: 'Pinellas County', image: 'Post-Storm_Restoration.webp' },
+            { cat: 'before-after', catLabel: 'Before & After', name: 'Concrete Pad + New Install', loc: 'Riverview', image: 'Concrete_Pad.webp' },
+            { cat: 'residential', catLabel: 'Residential', name: 'Kohler 20kW Coastal Install', loc: 'Apollo Beach', image: 'Kohler_20kW.jpg' },
+            { cat: 'commercial', catLabel: 'Commercial', name: 'Retail Plaza Backup', loc: 'Wesley Chapel', image: 'Retail_Plaza.jpg' },
+            { cat: 'maintenance', catLabel: 'Maintenance', name: 'Load Bank Testing', loc: 'Tampa', image: 'LoadBankTesting.jpg' },
+        ];
+
+        function renderGallery(filter = 'all') {
+            const grid = document.getElementById('galleryGrid');
+            if (!grid) return;
+            grid.innerHTML = '';
+            const items = filter === 'all' ? galleryItems : galleryItems.filter(i => i.cat === filter);
+            items.forEach((item, i) => {
+                const div = document.createElement('div');
+                div.className = 'gallery-item reveal';
+                div.style.transitionDelay = (i * 0.07) + 's';
+                div.innerHTML = `
+      <img src="${item.image}" alt="${item.name}" />
+      <div class="gallery-overlay">
+        <div class="gallery-meta">
+          <div class="gallery-cat">${item.catLabel}</div>
+          <div class="gallery-name">${item.name}</div>
+          <div class="gallery-loc">${item.loc}</div>
+        </div>
+      </div>`;
+                grid.appendChild(div);
+            });
+            // trigger reveal
+            setTimeout(() => {
+                grid.querySelectorAll('.reveal').forEach(el => el.classList.add('visible'));
+            }, 50);
+        }
+
+        // Filter buttons
+        document.addEventListener('click', e => {
+            const btn = e.target.closest('.filter-btn');
+            if (!btn) return;
+            document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            renderGallery(btn.dataset.filter || 'all');
+        });
+
+        // ============================================================
+        // FOOTER INJECTION
+        // ============================================================
+        function injectFooters() {
+            const tpl = document.getElementById('footer-tpl');
+            const slots = document.querySelectorAll('[id^="footer-"]');
+            slots.forEach(slot => {
+                if (slot.id === 'footer-tpl') return;
+                const clone = tpl.content.cloneNode(true);
+                slot.appendChild(clone);
+            });
+        }
+
+        // ============================================================
+        // PAGE NAVIGATION
+        // ============================================================
+        let currentPage = 'home';
+        function showPage(name) {
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            const target = document.getElementById('page-' + name);
+            if (target) {
+                target.classList.add('active');
+                currentPage = name;
+            }
+            // Update nav active states
+            document.querySelectorAll('.nav-links a').forEach(a => {
+                a.classList.toggle('active', a.dataset.page === name);
+            });
+            window.scrollTo({ top: 0, behavior: 'instant' });
+            // Re-trigger reveals
+            setTimeout(triggerReveal, 50);
+            // Gallery special init
+            if (name === 'gallery') {
+                setTimeout(() => {
+                    renderGallery('all');
+                    document.querySelectorAll('.filter-btn').forEach(b => b.classList.toggle('active', b.dataset.filter === 'all'));
+                }, 50);
+            }
+        }
+
+        // ============================================================
+        // REVEAL ON SCROLL
+        // ============================================================
+        function triggerReveal() {
+            const items = document.querySelectorAll('.page.active .reveal, .page.active .reveal-left, .page.active .reveal-right');
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(e => {
+                    if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); }
+                });
+            }, { threshold: 0.12 });
+            items.forEach(el => {
+                if (!el.classList.contains('visible')) observer.observe(el);
+                else el.classList.add('visible');
+            });
+        }
+
+        // ============================================================
+        // FAQ ACCORDION
+        // ============================================================
+        function toggleFaq(qEl) {
+            const item = qEl.parentElement;
+            const wasOpen = item.classList.contains('open');
+            // close all in same page
+            document.querySelectorAll('.page.active .faq-item').forEach(f => f.classList.remove('open'));
+            if (!wasOpen) item.classList.add('open');
+        }
+
+        // ============================================================
+        // NAVBAR SCROLL
+        // ============================================================
+        window.addEventListener('scroll', () => {
+            const nav = document.getElementById('navbar');
+            nav.classList.toggle('scrolled', window.scrollY > 20);
+            const bt = document.getElementById('back-top');
+            bt.classList.toggle('show', window.scrollY > 400);
+        });
+
+        // ============================================================
+        // HAMBURGER
+        // ============================================================
+        function toggleMobile() {
+            const hb = document.getElementById('hamburger');
+            const mm = document.getElementById('mobileMenu');
+            hb.classList.toggle('open');
+            mm.classList.toggle('open');
+        }
+        function closeMobile() {
+            document.getElementById('hamburger').classList.remove('open');
+            document.getElementById('mobileMenu').classList.remove('open');
+        }
+
+        // ============================================================
+        // LOADING SCREEN
+        // ============================================================
+        window.addEventListener('load', () => {
+            injectFooters();
+            setTimeout(() => {
+                document.getElementById('loader').classList.add('hide');
+                triggerReveal();
+            }, 2000);
+        });
+
+        // Initial reveal after DOM ready
+        const heroSlides = [
+            'hero.jpg',
+            'hero1.jpg',
+            'hero2.jpg',
+            'hero3.jpg',
+            'hero4.jpg',
+            'hero5.jpg',
+            'hero6.jpg',
+            'hero7.jpg',
+            'hero8.jpg',
+            'hero9.jpg',
+            'hero10.jpg',
+            'hero11.jpg'
+        ];
+        let heroSlideIndex = 0;
+
+        function updateHeroBackground() {
+            const heroBg = document.querySelector('#page-home .hero .hero-bg');
+            if (!heroBg) return;
+            heroBg.style.backgroundImage = `url('${heroSlides[heroSlideIndex]}')`;
+        }
+
+        function initHeroSlider() {
+            updateHeroBackground();
+            setInterval(() => {
+                heroSlideIndex = (heroSlideIndex + 1) % heroSlides.length;
+                updateHeroBackground();
+            }, 5000);
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            triggerReveal();
+            renderGallery('all');
+            initHeroSlider();
+        });
+    </script>
+</body>
+
+</html>
